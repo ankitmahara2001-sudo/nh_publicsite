@@ -162,7 +162,6 @@ export default async function AboutPage() {
         imageUrl={about.hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'About us' }]}
         active="about"
-        heightClass="h-[340px] lg:h-[440px]"
       />
       <Story story={about.story} />
       <Values heading={about.valuesHeading} values={about.values} />

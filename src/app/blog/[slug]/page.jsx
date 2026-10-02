@@ -63,7 +63,7 @@ function ArticleHero({ post }) {
     .filter(Boolean)
     .join(' · ');
   return (
-    <section className="relative isolate flex min-h-[440px] flex-col overflow-hidden bg-[#1F3044] text-white lg:h-[480px]">
+    <section className="relative isolate flex min-h-svh flex-col overflow-hidden bg-[#1F3044] text-white">
       <Photo src={post.coverImageUrl} alt="" priority sizes="100vw" className="-z-10" />
       <div
         aria-hidden="true"

@@ -1,27 +1,15 @@
 import { Header } from '@/components/layout/Header';
-import { cn } from '@/lib/cn';
 import { Breadcrumb } from './Breadcrumb';
 import { Photo } from './Photo';
 
 /**
  * Inner-page hero: photo with a dark overlay, transparent header on top, breadcrumb, H1 and subtitle
  * at the bottom left (Packages, Destinations, Offers, Gallery, Blog, About, Contact designs).
- * `heightClass` defaults to 280 px on phones and 380 px on desktop.
+ * Fills the screen (`min-h-svh`: the small viewport height, so it does not jump when phone browser bars hide).
  */
-export function PageHero({
-  title,
-  subtitle,
-  imageUrl,
-  imageAlt = '',
-  breadcrumb,
-  active,
-  heightClass = 'h-[280px] lg:h-[380px]',
-  children,
-}) {
+export function PageHero({ title, subtitle, imageUrl, imageAlt = '', breadcrumb, active, children }) {
   return (
-    <section
-      className={cn('relative isolate flex flex-col overflow-hidden bg-[#1F3044] text-white', heightClass)}
-    >
+    <section className="relative isolate flex min-h-svh flex-col overflow-hidden bg-[#1F3044] text-white">
       <Photo src={imageUrl} alt={imageAlt} priority sizes="100vw" className="-z-10" />
       <div
         aria-hidden="true"

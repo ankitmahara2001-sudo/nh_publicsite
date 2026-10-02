@@ -77,7 +77,7 @@ export function HeroSlider({ slides, children }) {
         if (event.key === 'ArrowRight') go(1);
         if (event.key === 'ArrowLeft') go(-1);
       }}
-      className="relative isolate flex h-[640px] flex-col overflow-hidden bg-navy lg:h-[720px]"
+      className="relative isolate flex min-h-svh flex-col overflow-hidden bg-navy"
     >
       {slides.map((slide, index) => (
         <div

@@ -73,7 +73,6 @@ export default async function PackagesPage({ searchParams }) {
         imageUrl={hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Packages' }]}
         active="packages"
-        heightClass="h-[300px] lg:h-[420px]"
       />
 
       <div className="mx-auto flex max-w-[1440px] gap-10 px-5 pt-4 pb-8 lg:items-start lg:px-20 lg:pt-14 lg:pb-20">

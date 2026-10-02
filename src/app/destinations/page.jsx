@@ -84,7 +84,6 @@ export default async function DestinationsPage({ searchParams }) {
         imageUrl={hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Destinations' }]}
         active="destinations"
-        heightClass="h-[280px] lg:h-[420px]"
       />
 
       <Container
