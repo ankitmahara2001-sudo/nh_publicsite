@@ -1,6 +1,6 @@
 'use client';
 
-import { formatDate, formatDateRange, formatRupees } from '@nh/shared';
+import { formatDate, formatDateRange, formatRupees } from '@/domain/format';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { CouponField } from '@/components/booking/CouponField';

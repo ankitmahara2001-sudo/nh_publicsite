@@ -1,6 +1,6 @@
 'use client';
 
-import { enquiryCreateSchema } from '@nh/shared';
+import { enquiryCreateSchema } from '@/domain/schemas/content';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input, Select, Textarea } from '@/components/ui/FormFields';
@@ -33,8 +33,8 @@ function fieldErrors(error) {
 }
 
 /**
- * "Send us a message" enquiry form (design/Contact + MobileContact). Validated with the shared
- * zod schema before sending; API field errors are shown under the matching inputs.
+ * "Send us a message" enquiry form (design/Contact + MobileContact). Validated with the enquiry
+ * zod schema (src/domain) before sending; API field errors are shown under the matching inputs.
  */
 export function EnquiryForm({ destinations, title, note, successMessage }) {
   const [values, setValues] = useState(EMPTY_FORM);

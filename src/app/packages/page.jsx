@@ -1,4 +1,4 @@
-import { TRIP_TYPES, TRIP_TYPE_LABELS } from '@nh/shared';
+import { TRIP_TYPES, TRIP_TYPE_LABELS } from '@/domain/enums';
 import Link from 'next/link';
 import { PackageCard } from '@/components/cards/PackageCard';
 import { FilterSheet, FilterSidebar, SortSelect } from '@/components/package/PackageFilters';

@@ -1,6 +1,7 @@
 'use client';
 
-import { OTP_LENGTH, otpVerifySchema } from '@nh/shared';
+import { OTP_LENGTH } from '@/domain/constants';
+import { otpVerifySchema } from '@/domain/schemas/auth';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/FormFields';

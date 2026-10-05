@@ -1,4 +1,4 @@
-import { GALLERY_CATEGORIES, GALLERY_CATEGORY_LABELS } from '@nh/shared';
+import { GALLERY_CATEGORIES, GALLERY_CATEGORY_LABELS } from '@/domain/enums';
 import Link from 'next/link';
 import { GalleryGrid } from '@/components/gallery/GalleryGrid';
 import { Container } from '@/components/ui/Container';

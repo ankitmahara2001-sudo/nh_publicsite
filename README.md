@@ -42,11 +42,10 @@ Any Node.js host for Next.js (e.g. Vercel). Set the variables above, then build 
 reachable during the build, and its `CORS_ORIGINS` must include this site's origin. Pages refresh their data
 from the API every 60 seconds.
 
-## Shared code
+## Domain code
 
-`shared/` (enums, zod schemas, formatting) is a copy of the master `shared/` in the project hub, installed as
-`@nh/shared`. Do not edit it here: edit the master, run `node scripts/sync-shared.mjs` in the hub, then
-commit the updated copy in each app.
+`src/domain/` holds this app's enums and labels, zod schemas and formatting helpers (prices, dates). The
+API validates everything again on its side; keep these in step with the API when a business rule changes.
 
 ## Notes
 

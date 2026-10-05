@@ -1,4 +1,5 @@
-import { TRIP_TYPE_LABELS, formatDuration } from '@nh/shared';
+import { TRIP_TYPE_LABELS } from '@/domain/enums';
+import { formatDuration } from '@/domain/format';
 import Link from 'next/link';
 import { buttonClasses } from '@/components/ui/Button';
 import { Photo } from '@/components/ui/Photo';
@@ -14,7 +15,7 @@ function cardBadge(pkg, preferTripType) {
   return TRIP_TYPE_LABELS[pkg.tripType];
 }
 
-export function Rating({ rating, reviewCount }) {
+function Rating({ rating, reviewCount }) {
   if (!reviewCount) return null;
   return (
     <span className="font-bold text-ink">

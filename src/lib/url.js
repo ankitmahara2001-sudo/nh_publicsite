@@ -14,7 +14,7 @@ export function buildHref(path, params = {}) {
 }
 
 /** A single string search param (the first one when repeated), or undefined. */
-export function firstParam(value) {
+function firstParam(value) {
   return Array.isArray(value) ? value[0] : value;
 }
 

@@ -1,12 +1,12 @@
 // Calendar dates as "YYYY-MM-DD" strings (string comparison works for this format).
 
-export function addDays(isoDate, days) {
+function addDays(isoDate, days) {
   const date = new Date(`${isoDate}T00:00:00Z`);
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
 
-export function isInRanges(isoDate, ranges) {
+function isInRanges(isoDate, ranges) {
   return ranges.some((range) => isoDate >= range.startDate && isoDate <= range.endDate);
 }
 

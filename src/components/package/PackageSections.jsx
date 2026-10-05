@@ -1,4 +1,4 @@
-import { formatDuration } from '@nh/shared';
+import { formatDuration } from '@/domain/format';
 import { Stars } from '@/components/cards/ReviewCard';
 import { Accordion } from '@/components/ui/Accordion';
 import { Photo } from '@/components/ui/Photo';

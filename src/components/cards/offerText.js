@@ -1,4 +1,5 @@
-import { PRICE_TYPE_LABELS, formatDate, formatRupees } from '@nh/shared';
+import { PRICE_TYPE_LABELS } from '@/domain/enums';
+import { formatDate, formatRupees } from '@/domain/format';
 
 // Turns an offer (coupon) from the API into the short texts shown on offer cards.
 

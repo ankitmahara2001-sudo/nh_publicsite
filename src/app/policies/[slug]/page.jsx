@@ -1,4 +1,4 @@
-import { POLICY_SLUGS } from '@nh/shared';
+import { POLICY_SLUGS } from '@/domain/enums';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';

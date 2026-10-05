@@ -1,9 +1,10 @@
-import { BLOG_CATEGORY_LABELS, formatDate } from '@nh/shared';
+import { BLOG_CATEGORY_LABELS } from '@/domain/enums';
+import { formatDate } from '@/domain/format';
 import Link from 'next/link';
 import { Photo } from '@/components/ui/Photo';
 import { cn } from '@/lib/cn';
 
-export function PostMeta({ post, className }) {
+function PostMeta({ post, className }) {
   return (
     <span className={cn('text-xs text-muted lg:text-[13px]', className)}>
       <span className="font-bold tracking-[1.2px] text-gold-text uppercase lg:tracking-[1.4px]">

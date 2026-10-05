@@ -1,4 +1,4 @@
-import { formatDate, formatDateRange } from '@nh/shared';
+import { formatDate, formatDateRange } from '@/domain/format';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AccountHeading } from '@/components/account/AccountHeading';

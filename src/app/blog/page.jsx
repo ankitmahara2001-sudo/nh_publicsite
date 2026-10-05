@@ -1,4 +1,4 @@
-import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from '@nh/shared';
+import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from '@/domain/enums';
 import Link from 'next/link';
 import { FeaturedPost } from '@/components/blog/FeaturedPost';
 import { BlogCard } from '@/components/cards/BlogCard';

@@ -1,4 +1,5 @@
-import { BLOG_CATEGORY_LABELS, formatDate } from '@nh/shared';
+import { BLOG_CATEGORY_LABELS } from '@/domain/enums';
+import { formatDate } from '@/domain/format';
 import Link from 'next/link';
 import { Photo } from '@/components/ui/Photo';
 

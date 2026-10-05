@@ -1,4 +1,4 @@
-import { formatDateRange, formatRupees } from '@nh/shared';
+import { formatDateRange, formatRupees } from '@/domain/format';
 import Link from 'next/link';
 import { buttonClasses } from '@/components/ui/Button';
 import { Photo } from '@/components/ui/Photo';

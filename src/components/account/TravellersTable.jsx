@@ -1,4 +1,4 @@
-import { GENDER_LABELS } from '@nh/shared';
+import { GENDER_LABELS } from '@/domain/enums';
 import { DetailSection } from './DetailSection';
 
 const CELL = 'px-3 py-3 first:pl-0 last:pr-0';

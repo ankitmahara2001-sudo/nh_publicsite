@@ -1,4 +1,5 @@
-import { formatDate, formatRupees, PAYMENT_METHOD_LABELS, PAYMENT_TYPE_LABELS } from '@nh/shared';
+import { formatDate, formatRupees } from '@/domain/format';
+import { PAYMENT_METHOD_LABELS, PAYMENT_TYPE_LABELS } from '@/domain/enums';
 import { Pill } from '@/components/ui/Pill';
 import { DetailSection } from './DetailSection';
 

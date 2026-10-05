@@ -1,4 +1,4 @@
-import { formatRupees, priceUnitLabel } from '@nh/shared';
+import { formatRupees, priceUnitLabel } from '@/domain/format';
 import { cn } from '@/lib/cn';
 
 /**

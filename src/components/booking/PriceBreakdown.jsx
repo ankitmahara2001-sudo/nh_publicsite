@@ -1,4 +1,4 @@
-import { formatRupees } from '@nh/shared';
+import { formatRupees } from '@/domain/format';
 import { cn } from '@/lib/cn';
 
 const UNIT_WORDS = {

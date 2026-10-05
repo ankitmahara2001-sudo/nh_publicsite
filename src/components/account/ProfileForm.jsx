@@ -1,6 +1,6 @@
 'use client';
 
-import { customerProfileSchema } from '@nh/shared';
+import { customerProfileSchema } from '@/domain/schemas/auth';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/FormFields';

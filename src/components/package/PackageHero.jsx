@@ -1,4 +1,5 @@
-import { TRIP_TYPE_LABELS, formatDuration, formatRupees, priceUnitLabel } from '@nh/shared';
+import { TRIP_TYPE_LABELS } from '@/domain/enums';
+import { formatDuration, formatRupees, priceUnitLabel } from '@/domain/format';
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';

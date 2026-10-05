@@ -1,4 +1,4 @@
-export const DEFAULT_AFTER_LOGIN = '/account/bookings';
+const DEFAULT_AFTER_LOGIN = '/account/bookings';
 
 /**
  * The `?next=` target after login, limited to paths on this site: "/…" but not "//…" or "/\…",

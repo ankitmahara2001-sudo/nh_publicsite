@@ -1,4 +1,4 @@
-import { BOOKING_STATUS_LABELS, PAYMENT_STATUS_LABELS } from '@nh/shared';
+import { BOOKING_STATUS_LABELS, PAYMENT_STATUS_LABELS } from '@/domain/enums';
 import { Pill } from '@/components/ui/Pill';
 
 const STATUS_TONES = { pending: 'sand', confirmed: 'success', completed: 'navy', cancelled: 'danger' };

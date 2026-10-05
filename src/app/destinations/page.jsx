@@ -1,4 +1,4 @@
-import { REGIONS, REGION_LABELS } from '@nh/shared';
+import { REGIONS, REGION_LABELS } from '@/domain/enums';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { EmptyState } from '@/components/ui/EmptyState';

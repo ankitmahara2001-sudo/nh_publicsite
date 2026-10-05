@@ -13,16 +13,6 @@ export function formatRupees(paise) {
   return `₹${formatter.format(amount)}`;
 }
 
-/** Rupees (from a form field) -> integer paise. */
-export function rupeesToPaise(rupees) {
-  return Math.round(Number(rupees) * PAISE_PER_RUPEE);
-}
-
-/** Paise -> rupees as a number (for form fields). */
-export function paiseToRupees(paise) {
-  return Number(paise ?? 0) / PAISE_PER_RUPEE;
-}
-
 const DATE_FORMAT = new Intl.DateTimeFormat('en-IN', {
   day: 'numeric',
   month: 'short',
@@ -64,10 +54,4 @@ export function priceUnitLabel(priceType, label) {
   if (priceType === 'per_person') return 'per person';
   if (priceType === 'per_couple') return 'per couple';
   return `per ${String(label || 'group').toLowerCase()}`;
-}
-
-/** Whole-number percentage saved, or 0 when there is no discount. */
-export function savingPercent(originalPrice, discountedPrice) {
-  if (discountedPrice == null || !originalPrice || discountedPrice >= originalPrice) return 0;
-  return Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
 }

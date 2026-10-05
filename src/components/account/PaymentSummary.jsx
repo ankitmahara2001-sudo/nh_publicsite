@@ -1,4 +1,4 @@
-import { formatRupees } from '@nh/shared';
+import { formatRupees } from '@/domain/format';
 import { quantityLine } from '@/components/booking/PriceBreakdown';
 import { DetailRows, DetailSection } from './DetailSection';
 

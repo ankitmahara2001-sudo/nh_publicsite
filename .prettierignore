@@ -4,5 +4,3 @@ build
 .next
 coverage
 package-lock.json
-# Copy of the master shared/ — formatted there, kept byte-for-byte identical here.
-shared

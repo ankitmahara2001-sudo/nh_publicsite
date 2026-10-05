@@ -1,4 +1,4 @@
-import { formatRupees, priceUnitLabel } from '@nh/shared';
+import { formatRupees, priceUnitLabel } from '@/domain/format';
 import { Button } from '@/components/ui/Button';
 import { Photo } from '@/components/ui/Photo';
 import { CopyLinkButton } from './CopyLinkButton';
