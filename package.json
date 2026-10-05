@@ -6,18 +6,25 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "engines": {
+    "node": ">=22.12"
   },
   "dependencies": {
+    "@nh/shared": "file:./shared",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "@nh/shared": "*"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.8",
+    "prettier": "^3.9.9",
     "tailwindcss": "^4"
   }
 }
