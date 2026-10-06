@@ -6,8 +6,7 @@ Tailwind CSS 4. All content comes from the Norther Harier API.
 ## Requirements
 
 - Node.js 22.12 or newer, npm 10+
-- The API running (locally on http://localhost:5000) — pages fetch their content from it, also during
-  `npm run build`
+- The API running (locally on http://localhost:5000) — pages fetch their content at request time.
 
 ## Setup
 
@@ -38,9 +37,16 @@ npm run dev                  # http://localhost:3000
 
 ## Deployment
 
-Any Node.js host for Next.js (e.g. Vercel). Set the variables above, then build and start. The API must be
-reachable during the build, and its `CORS_ORIGINS` must include this site's origin. Pages refresh their data
-from the API every 60 seconds.
+Any Node.js host for Next.js (e.g. Netlify or Vercel). Set the variables above, then build and start.
+API-backed pages and the sitemap render at request time, so an unavailable API does not block the build.
+The API must still be healthy to serve page content, and its `CORS_ORIGINS` must include this site's origin.
+Public API responses are cached for 60 seconds.
+
+`netlify.toml` configures the build and the Render API URL. In Netlify's environment settings,
+set `NEXT_PUBLIC_API_URL` and `API_URL_INTERNAL` to
+`https://nh-backend-3ty2.onrender.com/api` for both builds and functions, and set
+`NEXT_PUBLIC_SITE_URL` to the public website's own HTTPS URL. Redeploy after changing variables.
+Never upload backend database credentials or other backend secrets to the frontend environment.
 
 ## Domain code
 

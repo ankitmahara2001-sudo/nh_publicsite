@@ -1,10 +1,13 @@
 import { cookies } from 'next/headers';
+import { connection } from 'next/server';
 import { ApiError, getApi, getOrNull } from './api';
 
 // Server-only helpers shared by layouts and pages.
 
 /** Every public site setting (company, home texts, about, contact…), cached for 60 s. */
 export async function getSiteSettings() {
+  // Render API-backed pages on request, even when the backend is asleep at build time.
+  await connection();
   return (await getApi('/settings/public')).data;
 }
 

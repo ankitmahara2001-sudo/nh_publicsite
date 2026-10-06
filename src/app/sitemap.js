@@ -1,5 +1,6 @@
 import { getApi } from '@/lib/api';
 import { absoluteUrl } from '@/lib/site';
+import { connection } from 'next/server';
 
 export const revalidate = 3600;
 
@@ -27,6 +28,7 @@ async function fetchAll(path, pick) {
 }
 
 export default async function sitemap() {
+  await connection();
   const [packages, posts] = await Promise.all([
     fetchAll('/packages', (data) => data),
     // The featured post comes separately and is not in `posts` on page 1.

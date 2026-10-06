@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_PUBLIC_API_URL = "https://nh-backend-3ty2.onrender.com/api"
+  API_URL_INTERNAL = "https://nh-backend-3ty2.onrender.com/api"
