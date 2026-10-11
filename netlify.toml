@@ -4,6 +4,15 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  NEXT_PUBLIC_API_URL = "https://nh-backend-3ty2.onrender.com/api"
+  # The browser calls /api on this site, proxied to the API below, so the customer login cookie
+  # is first-party (a cross-site API domain gets its SameSite=Lax cookie blocked).
+  NEXT_PUBLIC_API_URL = "/api"
+  # Server-side rendering calls the API directly.
   API_URL_INTERNAL = "https://nh-backend-3ty2.onrender.com/api"
   NEXT_PUBLIC_SITE_URL = "https://northenpublic.netlify.app"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://nh-backend-3ty2.onrender.com/api/:splat"
+  status = 200
+  force = true

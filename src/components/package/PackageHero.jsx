@@ -13,7 +13,7 @@ export function PackageHero({ pkg }) {
   const rating = pkg.reviewCount ? `★ ${pkg.rating.toFixed(1)}` : null;
 
   return (
-    <section className="relative isolate flex min-h-svh flex-col overflow-hidden bg-[#1B2B3A] text-white">
+    <section className="relative isolate flex min-h-[420px] flex-col overflow-hidden bg-[#1B2B3A] text-white lg:min-h-[540px]">
       <Photo src={pkg.coverImageUrl} alt="" priority sizes="100vw" className="-z-10" />
       <div
         aria-hidden="true"

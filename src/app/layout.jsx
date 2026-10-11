@@ -32,7 +32,7 @@ export async function generateMetadata() {
 export default async function RootLayout({ children }) {
   // Photos come from Cloudinary; the login state and price quotes come from the API.
   preconnect('https://res.cloudinary.com');
-  preconnect(BROWSER_API_ORIGIN, { crossOrigin: 'use-credentials' });
+  if (BROWSER_API_ORIGIN) preconnect(BROWSER_API_ORIGIN, { crossOrigin: 'use-credentials' });
   const { company, social } = await getSiteSettings();
   return (
     <html lang="en-IN" className={`${manrope.variable} antialiased`}>

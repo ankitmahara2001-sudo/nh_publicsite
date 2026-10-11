@@ -81,7 +81,7 @@ export function Footer({ company, social }) {
       <div className="mx-auto flex max-w-[1440px] flex-col gap-7 px-5 pt-10 pb-7 lg:gap-14 lg:px-20 lg:pt-[72px] lg:pb-10">
         <div className="flex flex-col gap-7 lg:flex-row lg:justify-between">
           <div className="flex flex-col gap-3 lg:w-[340px] lg:gap-[18px]">
-            <Logo name={company.name} />
+            <Logo name={company.name} tone="light" />
             {company.tagline && (
               <p className="text-sm leading-[22px] text-footer-text lg:text-[15px] lg:leading-6">
                 {company.tagline}

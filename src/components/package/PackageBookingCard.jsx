@@ -1,79 +1,17 @@
 'use client';
 
-import { formatDate, formatDateRange, formatRupees } from '@/domain/format';
+import { formatRupees } from '@/domain/format';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { CouponField } from '@/components/booking/CouponField';
 import { PriceBreakdown } from '@/components/booking/PriceBreakdown';
+import { TravelDateField } from '@/components/booking/TravelDateField';
+import { TravellerCounters } from '@/components/booking/TravellerCounters';
 import { useQuote } from '@/components/booking/useQuote';
 import { buttonClasses } from '@/components/ui/Button';
-import { Input } from '@/components/ui/FormFields';
-import { NumberStepper } from '@/components/ui/NumberStepper';
 import { OptionCard } from '@/components/ui/OptionCard';
 import { defaultCounts, toBookingSearch, toQuoteRequest } from '@/lib/bookingSelection';
 import { firstOpenDate } from '@/lib/dates';
-
-const MAX_PER_COUNTER = 20;
-
-function seatsLabel(departure) {
-  if (departure.soldOut) return 'Sold out';
-  if (departure.seatsLeft === null) return 'Seats available';
-  return `${departure.seatsLeft} seat${departure.seatsLeft === 1 ? '' : 's'} left`;
-}
-
-/** Traveller counters for the chosen price option (CLAUDE.md "Travellers and quantity"). */
-function TravellerCounters({ price, counts, setCount, error }) {
-  if (price.priceType === 'per_person') {
-    return (
-      <div className="flex flex-col gap-3">
-        <NumberStepper
-          label="Adults"
-          note="12 years and above"
-          value={counts.adults}
-          min={1}
-          max={MAX_PER_COUNTER}
-          onChange={(v) => setCount('adults', v)}
-          error={error}
-        />
-        <NumberStepper
-          label="Children"
-          note="5 to 11 years"
-          value={counts.children}
-          max={MAX_PER_COUNTER}
-          onChange={(v) => setCount('children', v)}
-        />
-        <NumberStepper
-          label="Infants"
-          note="Under 5, travel free"
-          value={counts.infants}
-          max={MAX_PER_COUNTER}
-          onChange={(v) => setCount('infants', v)}
-        />
-      </div>
-    );
-  }
-  const unit = price.priceType === 'per_couple' ? 'Couples' : `${price.label}`;
-  return (
-    <div className="flex flex-col gap-3">
-      <NumberStepper
-        label={unit}
-        note={`${price.personsCovered} travellers each`}
-        value={counts.units}
-        min={1}
-        max={MAX_PER_COUNTER}
-        onChange={(v) => setCount('units', v)}
-        error={error}
-      />
-      <NumberStepper
-        label="Infants"
-        note="Under 5, travel free"
-        value={counts.infants}
-        max={MAX_PER_COUNTER}
-        onChange={(v) => setCount('infants', v)}
-      />
-    </div>
-  );
-}
 
 /**
  * Booking card on the package page (design/PackageDetail.dc.html aside + mobile "Choose your package").
@@ -159,66 +97,14 @@ export function PackageBookingCard({ pkg, cancellationNote }) {
           <span className="text-xs text-muted">Prices exclude GST.</span>
         </div>
 
-        {fixed ? (
-          <div role="radiogroup" aria-label="Departure date" className="flex flex-col gap-2">
-            <span className="text-sm font-bold">Departure date</span>
-            {pkg.departures.length === 0 ? (
-              <p className="text-sm text-muted">
-                No departures are open right now.{' '}
-                <Link href="/contact" className="font-bold text-navy underline">
-                  Ask us for the next dates
-                </Link>
-                .
-              </p>
-            ) : (
-              <div className="flex max-h-[260px] flex-col gap-2 overflow-y-auto pr-1">
-                {pkg.departures.map((d) => (
-                  <OptionCard
-                    key={d.id}
-                    selected={d.id === departureId}
-                    disabled={d.soldOut}
-                    onSelect={() => setDepartureId(d.id)}
-                    title={formatDateRange(d.startDate, d.endDate)}
-                    aside={
-                      <span
-                        className={
-                          d.soldOut
-                            ? 'text-[13px] font-bold text-danger'
-                            : 'text-[13px] font-bold text-success'
-                        }
-                      >
-                        {seatsLabel(d)}
-                      </span>
-                    }
-                  />
-                ))}
-              </div>
-            )}
-            {dateError && <span className="text-[13px] font-semibold text-danger">{dateError}</span>}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-1.5">
-            <Input
-              label="Travel date"
-              type="date"
-              min={earliest}
-              value={travelDate}
-              onChange={(e) => setTravelDate(e.target.value)}
-              error={dateError}
-            />
-            {pkg.blockedDates.length > 0 && (
-              <p className="text-xs text-muted">
-                Not available:{' '}
-                {pkg.blockedDates
-                  .map(
-                    (b) =>
-                      `${formatDate(b.startDate)} – ${formatDate(b.endDate)}${b.reason ? ` (${b.reason})` : ''}`,
-                  )
-                  .join('; ')}
-              </p>
-            )}
-          </div>
-        )}
+        <TravelDateField
+          pkg={pkg}
+          departureId={departureId}
+          onDepartureChange={setDepartureId}
+          travelDate={travelDate}
+          onTravelDateChange={setTravelDate}
+          error={dateError}
+        />
 
         <TravellerCounters price={price} counts={counts} setCount={setCount} error={countError} />
 

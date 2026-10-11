@@ -33,7 +33,7 @@ export function MobileMenu({ company, onClose }) {
     >
       <div className="flex h-16 shrink-0 items-center justify-between border-b border-footer-line pr-3 pl-5">
         <span className="flex items-center gap-2">
-          <LogoMark />
+          <LogoMark tone="light" />
           <span className="text-[17px] font-extrabold">{company.name}</span>
         </span>
         <button

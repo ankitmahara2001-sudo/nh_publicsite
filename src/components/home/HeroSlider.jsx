@@ -36,14 +36,15 @@ function ArrowButton({ direction, onClick, className }) {
 
 /**
  * Full-width hero photos that crossfade every 5 s, with the "Up next" card (design/Main.dc.html).
- * Pauses while hovered or focused and does not auto-advance for prefers-reduced-motion.
+ * Pauses while the "Up next" controls are hovered or keyboard-focused, and does not
+ * auto-advance for prefers-reduced-motion.
  * `children` (header + hero text) is rendered above the photos.
  */
 export function HeroSlider({ slides, children }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const regionRef = useRef(null);
+  const controlsRef = useRef(null);
   const count = slides.length;
 
   const go = useCallback((step) => setCurrent((index) => (index + step + count) % count), [count]);
@@ -56,23 +57,19 @@ export function HeroSlider({ slides, children }) {
     return () => query.removeEventListener('change', update);
   }, []);
 
+  // Restarts on every slide change, so a manual change also gets the full 5 s.
   useEffect(() => {
     if (paused || reducedMotion || count < 2) return undefined;
-    const timer = setInterval(() => go(1), AUTOPLAY_MS);
-    return () => clearInterval(timer);
-  }, [paused, reducedMotion, count, go]);
+    const timer = setTimeout(() => go(1), AUTOPLAY_MS);
+    return () => clearTimeout(timer);
+  }, [current, paused, reducedMotion, count, go]);
 
   const next = slides[(current + 1) % count];
 
   return (
     <section
-      ref={regionRef}
       aria-roledescription="carousel"
       aria-label="Featured destinations"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={(event) => !regionRef.current?.contains(event.relatedTarget) && setPaused(false)}
       onKeyDown={(event) => {
         if (event.key === 'ArrowRight') go(1);
         if (event.key === 'ArrowLeft') go(-1);
@@ -110,7 +107,16 @@ export function HeroSlider({ slides, children }) {
       {children}
 
       {count > 1 && (
-        <div className="absolute right-4 bottom-5 z-10 flex w-[220px] flex-col gap-2.5 rounded-xl border border-white/16 bg-navy/80 p-2.5 text-white backdrop-blur-sm lg:right-20 lg:bottom-24 lg:w-[340px] lg:gap-3.5 lg:rounded-[var(--radius-card)] lg:p-4">
+        // Pause only while the slider's own controls are in use: the hero fills the screen, so
+        // pausing on hover of the whole hero would stop autoplay whenever the pointer is on it.
+        // Keyboard focus pauses; a mouse click on an arrow (focus without :focus-visible) doesn't.
+        <div
+          ref={controlsRef}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={(event) => event.target.matches(':focus-visible') && setPaused(true)}
+          onBlur={(event) => !controlsRef.current?.contains(event.relatedTarget) && setPaused(false)}
+          className="absolute right-4 bottom-5 z-10 flex w-[220px] flex-col gap-2.5 rounded-xl border border-white/16 bg-navy/80 p-2.5 text-white backdrop-blur-sm lg:right-20 lg:bottom-24 lg:w-[340px] lg:gap-3.5 lg:rounded-[var(--radius-card)] lg:p-4">
           <div className="flex items-center gap-2.5 lg:gap-3.5">
             <div
               aria-hidden="true"

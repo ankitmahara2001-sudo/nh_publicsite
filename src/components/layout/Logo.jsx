@@ -1,33 +1,37 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/cn';
 
-export function LogoMark({ className }) {
+// The mark's "NH" letters are navy, so dark backgrounds (navy footer/menu, header over a
+// hero photo) use a copy with white letters; the gold mountains are the same in both.
+const MARK_SRC = { dark: '/logo-mark.png', light: '/logo-mark-light.png' };
+const MARK_WIDTH = 233;
+const MARK_HEIGHT = 144;
+
+/** @param {{ tone?: 'dark' | 'light', className?: string }} props */
+export function LogoMark({ tone = 'dark', className }) {
   return (
-    <svg
-      viewBox="0 0 32 32"
-      fill="none"
-      aria-hidden="true"
-      className={cn('size-[26px] lg:size-[30px]', className)}
-    >
-      <path
-        d="M3 26 L12 10 L17 18 L21 12 L29 26 Z"
-        stroke="#C8893A"
-        strokeWidth="2.3"
-        strokeLinejoin="round"
-      />
-      <circle cx="23" cy="7" r="2.5" fill="#C8893A" />
-    </svg>
+    <Image
+      src={MARK_SRC[tone]}
+      alt=""
+      width={MARK_WIDTH}
+      height={MARK_HEIGHT}
+      unoptimized
+      loading="eager"
+      className={cn('h-9 w-auto lg:h-11', className)}
+    />
   );
 }
 
-export function Logo({ name, className }) {
+/** @param {{ name: string, tone?: 'dark' | 'light', className?: string }} props */
+export function Logo({ name, tone = 'dark', className }) {
   return (
     <Link
       href="/"
       aria-label={`${name} home`}
       className={cn('flex items-center gap-2 lg:gap-2.5', className)}
     >
-      <LogoMark />
+      <LogoMark tone={tone} />
       <span className="text-[17px] font-extrabold tracking-[-0.3px] lg:text-[19px] lg:tracking-[-0.4px]">
         {name}
       </span>

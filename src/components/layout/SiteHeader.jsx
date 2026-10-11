@@ -34,7 +34,7 @@ export function SiteHeader({ variant = 'transparent', active, company }) {
         )}
       >
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between pr-3 pl-5 lg:h-[88px] lg:px-20">
-          <Logo name={company.name} className="lg:w-[280px]" />
+          <Logo name={company.name} tone={light ? 'light' : 'dark'} className="lg:w-[280px]" />
 
           <nav aria-label="Main" className="hidden gap-8 lg:flex">
             {NAV_LINKS.map((link) => {

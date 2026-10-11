@@ -8,10 +8,13 @@ const SERVER_BASE = (
   process.env.NEXT_PUBLIC_API_URL ??
   'http://localhost:5000/api'
 ).replace(/\/$/, '');
+// In production this is "/api": the site's own domain proxies it to the API (netlify.toml), so the
+// login cookie is first-party. A cross-site API domain would get its SameSite=Lax cookie blocked.
 const BROWSER_BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api').replace(/\/$/, '');
+const isRelative = (base) => base.startsWith('/');
 
-/** Origin the browser calls (preconnected from the root layout). */
-export const BROWSER_API_ORIGIN = new URL(BROWSER_BASE).origin;
+/** Origin the browser calls (preconnected from the root layout); null when it is this site. */
+export const BROWSER_API_ORIGIN = isRelative(BROWSER_BASE) ? null : new URL(BROWSER_BASE).origin;
 
 export class ApiError extends Error {
   constructor(status, code, message, fields) {
@@ -23,7 +26,8 @@ export class ApiError extends Error {
 }
 
 function withParams(base, path, params) {
-  const url = new URL(base + path);
+  // A relative base ("/api") is only used in the browser, where it resolves against this site.
+  const url = new URL(base + path, isRelative(base) ? window.location.origin : undefined);
   for (const [key, value] of Object.entries(params ?? {})) {
     if (value === undefined || value === null || value === '') continue;
     if (Array.isArray(value)) value.forEach((v) => url.searchParams.append(key, v));

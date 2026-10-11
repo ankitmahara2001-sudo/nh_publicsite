@@ -39,6 +39,16 @@ export function toQuoteRequest({ packageId, priceId, travelDate, departureId, co
   };
 }
 
+/**
+ * People on the trip for a price option: paying `seats` (adults + children, or units × persons
+ * covered) plus free `infants`. Each one needs a traveller form.
+ */
+export function travellerTotals(price, counts) {
+  const seats =
+    price.priceType === 'per_person' ? counts.adults + counts.children : counts.units * price.personsCovered;
+  return { seats, infants: counts.infants };
+}
+
 /** Default counts for a price option: 1 adult per person, or 1 couple/group. */
 export function defaultCounts(priceType) {
   return priceType === 'per_person'
