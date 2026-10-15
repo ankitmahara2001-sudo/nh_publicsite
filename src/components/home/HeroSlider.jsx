@@ -14,13 +14,16 @@ function ArrowButton({ direction, onClick, className }) {
       aria-label={direction === 'prev' ? 'Previous slide' : 'Next slide'}
       onClick={onClick}
       className={cn(
-        'flex shrink-0 items-center justify-center rounded-full border border-white/35 text-white hover:bg-white/10',
+        'flex shrink-0 items-center justify-center rounded-full transition',
+        direction === 'prev'
+          ? 'border border-page/40 text-page hover:bg-page/10'
+          : 'bg-gold text-ink hover:brightness-[1.06]',
         className,
       )}
     >
       <svg
-        width="16"
-        height="16"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -35,7 +38,8 @@ function ArrowButton({ direction, onClick, className }) {
 }
 
 /**
- * Full-width hero photos that crossfade every 5 s, with the "Up next" card (design/Main.dc.html).
+ * Full-width hero photos that crossfade every 5 s, with the "Now showing" controller
+ * (design: Main hero slide controller; Mobile-Home counter and dots).
  * Pauses while the "Up next" controls are hovered or keyboard-focused, and does not
  * auto-advance for prefers-reduced-motion.
  * `children` (header + hero text) is rendered above the photos.
@@ -74,7 +78,7 @@ export function HeroSlider({ slides, children }) {
         if (event.key === 'ArrowRight') go(1);
         if (event.key === 'ArrowLeft') go(-1);
       }}
-      className="relative isolate flex min-h-svh flex-col overflow-hidden bg-navy"
+      className="relative isolate flex min-h-[640px] flex-col overflow-hidden bg-navy lg:min-h-[min(860px,100svh)]"
     >
       {slides.map((slide, index) => (
         <div
@@ -101,63 +105,80 @@ export function HeroSlider({ slides, children }) {
       ))}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-navy/60 via-navy/10 to-navy/80"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-navy/55 via-navy/15 to-navy/75"
       />
 
       {children}
+
+      {/* Ridge silhouette into the page (design kit "Section edge"). */}
+      <svg
+        viewBox="0 0 1440 60"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 block h-10 w-full lg:h-16"
+      >
+        <path
+          d="M0 60 L0 40 L80 22 L150 34 L240 8 L320 30 L420 14 L520 36 L610 18 L720 32 L820 6 L910 28 L1010 16 L1110 34 L1200 12 L1300 30 L1380 20 L1440 28 L1440 60 Z"
+          fill="#f5f1e8"
+        />
+      </svg>
 
       {count > 1 && (
         // Pause only while the slider's own controls are in use: the hero fills the screen, so
         // pausing on hover of the whole hero would stop autoplay whenever the pointer is on it.
         // Keyboard focus pauses; a mouse click on an arrow (focus without :focus-visible) doesn't.
-        <div
-          ref={controlsRef}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={(event) => event.target.matches(':focus-visible') && setPaused(true)}
-          onBlur={(event) => !controlsRef.current?.contains(event.relatedTarget) && setPaused(false)}
-          className="absolute right-4 bottom-5 z-10 flex w-[220px] flex-col gap-2.5 rounded-xl border border-white/16 bg-navy/80 p-2.5 text-white backdrop-blur-sm lg:right-20 lg:bottom-24 lg:w-[340px] lg:gap-3.5 lg:rounded-[var(--radius-card)] lg:p-4">
-          <div className="flex items-center gap-2.5 lg:gap-3.5">
+        <div className="pointer-events-none absolute inset-x-0 bottom-14 z-10 lg:bottom-24">
+          <div className="mx-auto flex max-w-[1280px] justify-end px-5 lg:px-8">
             <div
-              aria-hidden="true"
-              className="relative size-[52px] shrink-0 overflow-hidden rounded-lg lg:size-[84px] lg:rounded-[10px]"
+              ref={controlsRef}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              onFocus={(event) => event.target.matches(':focus-visible') && setPaused(true)}
+              onBlur={(event) => !controlsRef.current?.contains(event.relatedTarget) && setPaused(false)}
+              className="pointer-events-auto flex w-full items-center justify-between gap-4 text-page lg:w-auto lg:gap-[18px] lg:rounded-[18px] lg:bg-navy/72 lg:py-3.5 lg:pr-3.5 lg:pl-[22px] lg:backdrop-blur-md"
             >
-              <Image src={next.imageUrl} alt="" fill sizes="84px" className="object-cover" />
-            </div>
-            <div className="flex min-w-0 flex-1 flex-col lg:gap-0.5">
-              <span className="text-[10px] font-bold tracking-[1.4px] text-gold-light lg:text-xs lg:tracking-[1.6px]">
-                UP NEXT
-              </span>
-              <span className="truncate text-[15px] font-bold lg:text-lg">{next.title}</span>
-              <span className="hidden text-[13px] text-white/70 lg:block">{next.region}, Uttarakhand</span>
-            </div>
-            <ArrowButton direction="next" onClick={() => go(1)} className="size-11 lg:hidden" />
-          </div>
-          <div className="flex items-center gap-2 lg:gap-3">
-            <span className="text-[11px] font-bold lg:w-[52px] lg:text-[13px]" aria-live="polite">
-              {pad(current + 1)} / {pad(count)}
-            </span>
-            <div className="flex flex-1 gap-1 lg:gap-1.5">
-              {slides.map((slide, index) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  aria-label={`Show slide ${index + 1}: ${slide.title}`}
-                  aria-current={index === current}
-                  onClick={() => setCurrent(index)}
-                  className="flex h-3 flex-1 items-center"
-                >
+              <div className="flex min-w-0 flex-col gap-2 lg:gap-0 lg:leading-tight">
+                <span className="text-[13px] lg:text-[11px] lg:font-bold lg:tracking-[.2em] lg:text-gold-light lg:uppercase">
+                  <span className="hidden lg:inline">Now showing · </span>
                   <span
-                    className={cn(
-                      'h-[3px] w-full rounded-sm transition-colors',
-                      index === current ? 'bg-gold' : 'bg-white/30',
-                    )}
-                  />
-                </button>
-              ))}
+                    aria-live="polite"
+                    className="font-bold tracking-[.14em] text-gold-light lg:tracking-[inherit]"
+                  >
+                    {pad(current + 1)} / {pad(count)}
+                  </span>
+                  <span className="lg:hidden"> · Up next: {next.title}</span>
+                </span>
+                <span className="hidden font-display text-xl lg:block">{slides[current].title}</span>
+                <span className="hidden text-[13px] text-footer-text lg:block">
+                  {slides[current].region ? `${slides[current].region} · ` : ''}up next: {next.title}
+                </span>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-2.5 lg:flex-row lg:items-center">
+                <div className="flex items-center gap-0.5">
+                  {slides.map((slide, index) => (
+                    <button
+                      key={slide.id}
+                      type="button"
+                      aria-label={`Show slide ${index + 1}: ${slide.title}`}
+                      aria-current={index === current}
+                      onClick={() => setCurrent(index)}
+                      className="flex h-6 min-w-4 items-center justify-center px-0.5"
+                    >
+                      <span
+                        className={cn(
+                          'h-1.5 rounded-full transition-all',
+                          index === current ? 'w-[22px] bg-gold' : 'w-1.5 bg-page/60',
+                        )}
+                      />
+                    </button>
+                  ))}
+                </div>
+                <div className="hidden gap-2 lg:flex">
+                  <ArrowButton direction="prev" onClick={() => go(-1)} className="size-11" />
+                  <ArrowButton direction="next" onClick={() => go(1)} className="size-11" />
+                </div>
+              </div>
             </div>
-            <ArrowButton direction="prev" onClick={() => go(-1)} className="hidden size-9 lg:flex" />
-            <ArrowButton direction="next" onClick={() => go(1)} className="hidden size-9 lg:flex" />
           </div>
         </div>
       )}

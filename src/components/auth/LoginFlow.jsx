@@ -49,7 +49,7 @@ export function LoginFlow({ nextPath, initialCustomer = null }) {
   if (step === 'profile') {
     return (
       <>
-        <StepHeading title="Complete your profile" focusOnMount={hasMoved}>
+        <StepHeading title="Complete your profile" aside="naya safar —" focusOnMount={hasMoved}>
           Just your name and mobile number, so we can reach you about your trips.
         </StepHeading>
         <ProfileForm

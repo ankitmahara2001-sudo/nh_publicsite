@@ -1,4 +1,4 @@
-import { Manrope } from 'next/font/google';
+import { Figtree, Kalam, Young_Serif } from 'next/font/google';
 import { preconnect } from 'react-dom';
 import { Footer } from '@/components/layout/Footer';
 import { BROWSER_API_ORIGIN } from '@/lib/api';
@@ -6,10 +6,23 @@ import { getSiteSettings } from '@/lib/server';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
-const manrope = Manrope({
-  variable: '--font-manrope',
+// Design type: Figtree (body/UI), Young Serif (headlines, prices), Kalam (short handwritten asides).
+const figtree = Figtree({
+  variable: '--font-figtree',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
+});
+
+const youngSerif = Young_Serif({
+  variable: '--font-young-serif',
+  subsets: ['latin'],
+  weight: '400',
+});
+
+const kalam = Kalam({
+  variable: '--font-kalam',
+  subsets: ['latin', 'devanagari'],
+  weight: ['400', '700'],
 });
 
 /** Site-wide SEO defaults from the admin "SEO" settings; pages override title and description. */
@@ -35,11 +48,11 @@ export default async function RootLayout({ children }) {
   if (BROWSER_API_ORIGIN) preconnect(BROWSER_API_ORIGIN, { crossOrigin: 'use-credentials' });
   const { company, social } = await getSiteSettings();
   return (
-    <html lang="en-IN" className={`${manrope.variable} antialiased`}>
-      <body className="flex min-h-screen flex-col font-sans">
+    <html lang="en-IN" className={`${figtree.variable} ${youngSerif.variable} ${kalam.variable} antialiased`}>
+      <body className="flex min-h-screen flex-col bg-page font-sans text-ink">
         <a
           href="#main"
-          className="sr-only z-50 rounded-full bg-gold px-4 py-2 font-bold text-navy focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-50 rounded-full bg-gold px-4 py-2 font-bold text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>

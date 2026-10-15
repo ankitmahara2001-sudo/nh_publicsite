@@ -10,20 +10,22 @@ import { cn } from '@/lib/cn';
 export function NumberStepper({ label, note, value, onChange, min = 0, max = 20, error, className }) {
   const id = useId();
   const button =
-    'flex size-11 items-center justify-center rounded-full border border-input bg-surface text-lg text-ink transition hover:border-navy disabled:cursor-not-allowed disabled:opacity-40';
+    'flex size-11 items-center justify-center rounded-full text-xl transition disabled:cursor-not-allowed disabled:opacity-40';
+  const minus = cn(button, 'border-[1.5px] border-input bg-page text-ink hover:border-navy');
+  const plus = cn(button, 'bg-navy text-page hover:bg-navy-2');
   return (
     <div className={cn('flex flex-col gap-1', className)}>
       <div role="group" aria-labelledby={`${id}-label`} className="flex items-center justify-between gap-3">
         <span className="flex flex-col">
-          <span id={`${id}-label`} className="text-[15px] font-bold">
+          <span id={`${id}-label`} className="text-[15px] font-semibold">
             {label}
           </span>
-          {note && <span className="text-xs text-muted">{note}</span>}
+          {note && <span className="text-[13px] text-muted">{note}</span>}
         </span>
-        <span className="flex items-center gap-2.5 lg:gap-3.5">
+        <span className="flex items-center gap-1.5">
           <button
             type="button"
-            className={button}
+            className={minus}
             aria-label={`Fewer ${label.toLowerCase()}`}
             disabled={value <= min}
             onClick={() => onChange(value - 1)}
@@ -33,13 +35,13 @@ export function NumberStepper({ label, note, value, onChange, min = 0, max = 20,
           <output
             aria-live="polite"
             aria-label={`${label}: ${value}`}
-            className="min-w-5 text-center text-[17px] font-extrabold"
+            className="font-display min-w-8 text-center text-[20px]"
           >
             {value}
           </output>
           <button
             type="button"
-            className={button}
+            className={plus}
             aria-label={`More ${label.toLowerCase()}`}
             disabled={value >= max}
             onClick={() => onChange(value + 1)}

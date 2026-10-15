@@ -30,9 +30,9 @@ export function SectionNav({ sections }) {
   return (
     <nav
       aria-label="On this page"
-      className="sticky top-0 z-20 hidden border-b border-line bg-surface lg:block"
+      className="sticky top-0 z-20 hidden border-b border-line bg-page/95 backdrop-blur-sm lg:block"
     >
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-9 px-20">
+      <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-9 px-8">
         {sections.map(({ id, label }) => (
           <a
             key={id}
@@ -42,7 +42,7 @@ export function SectionNav({ sections }) {
               'border-b-2 py-5 text-[15px] transition',
               active === id
                 ? 'border-gold font-bold text-ink'
-                : 'border-transparent font-semibold text-muted hover:text-ink',
+                : 'border-transparent font-medium text-muted hover:text-ink',
             )}
           >
             {label}

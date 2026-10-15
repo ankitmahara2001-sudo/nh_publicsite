@@ -1,51 +1,91 @@
 @import 'tailwindcss';
 
-/* Design tokens from CLAUDE.md section 5 / design/*.dc.html. Use these everywhere. */
+/*
+ * "Devbhoomi Dawn" design tokens (design: Northern Harrier — Uttarakhand Redesign, UI-Kit board).
+ * The token names are kept from the previous theme so every component picks up the new palette:
+ * navy = Deodar, gold = Marigold, page = Snow, surface = Paper.
+ */
 @theme {
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-young-serif), Georgia, ui-serif, serif;
+  --font-hand: var(--font-kalam), 'Comic Sans MS', cursive;
 
-  --color-navy: #0f1b2d;
-  --color-navy-2: #1c2b42;
-  --color-gold: #c8893a;
-  --color-gold-text: #7a4e12;
-  --color-gold-light: #e7c08a;
-  --color-sand: #efe7da;
-  --color-sand-light: #f7f1e6;
-  --color-page: #f7f5f1;
-  --color-surface: #ffffff;
-  --color-ink: #1d2230;
-  --color-muted: #5e6470;
-  --color-body: #4a505c;
-  --color-line: #e6e1d8;
-  --color-input: #d9d3c7;
-  --color-dash: #d9cdbb;
-  --color-success: #2e7d4f;
-  --color-success-bg: #e8f3ec;
-  --color-success-text: #1f5e3a;
-  --color-danger: #b23a2e;
-  --color-selected: #f2f4f7;
-  --color-footer-text: #c3c8d1;
-  --color-footer-muted: #a3aab6;
-  --color-footer-line: #243449;
-  --color-footer-ring: #34435b;
-  --color-placeholder: #2b3b4e;
+  /* Palette · drawn from the hills */
+  --color-navy: #12261f; /* Deodar · text, dark */
+  --color-navy-2: #1d3d32; /* Forest */
+  --color-pine: #2b5243; /* Pine · labels */
+  --color-moss: #4c6b4f;
+  --color-glacier: #7c93a8;
+  --color-dawn: #f7d9a6;
+  --color-gold: #e2892b; /* Marigold · primary CTA */
+  --color-gold-2: #eea150; /* Marigold coupon stub */
+  --color-gold-text: #a2481a; /* Rust · Kalam notes, links */
+  --color-gold-light: #f2b46a;
+  --color-buransh: #b8364a; /* Buransh · badges */
+  --color-sand: #ebe4d3;
+  --color-sand-light: #f1ece0;
+  --color-stub: #ece5d4;
+  --color-page: #f5f1e8; /* Snow · ground */
+  --color-surface: #fbf9f4; /* Paper · cards */
+  --color-ink: #12261f;
+  --color-muted: #4c5a54;
+  --color-body: #3d4b45;
+  --color-line: #e4dccb;
+  --color-input: #d3c9b3;
+  --color-chip: #b9b19f;
+  --color-dash: #d3c9b3;
+  --color-success: #2b5243;
+  --color-success-bg: #e4ece6;
+  --color-success-text: #1d3d32;
+  --color-danger: #9c2e3f;
+  --color-danger-bg: #fbeff0;
+  --color-blush: #f4e3dc;
+  --color-selected: #efe9dc;
+  --color-footer-text: #d4dcd7;
+  --color-footer-muted: #aab7b0;
+  --color-footer-line: #2c3d36;
+  --color-footer-ring: #4a5953;
+  --color-placeholder: #1d3d32;
+  --color-night: #141d33;
 
-  --radius-control: 10px;
-  --radius-card: 14px;
-  --radius-panel: 16px;
+  --radius-control: 14px;
+  --radius-card: 22px;
+  --radius-panel: 26px;
 
   --text-overline: 12px;
   --text-overline--letter-spacing: 2.4px;
 }
 
-body {
-  background: var(--color-page);
-  color: var(--color-ink);
+@layer base {
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    line-height: 1.55;
+  }
+
+  /* Headlines, prices and numbers use Young Serif (one weight only, so never synthesise bold). */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-synthesis: none;
+    letter-spacing: normal;
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
 }
 
 :focus-visible {
   outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+/* Young Serif display text (used outside h1–h3: prices, numbers, big quotes). */
+.font-display {
+  font-synthesis: none;
 }
 
 /* Hide scrollbars on horizontal card carousels (mobile design) while keeping them scrollable. */
@@ -56,28 +96,61 @@ body {
   display: none;
 }
 
+/* Cards that lift on hover (design: .nh-card / .nh-btn). */
+.lift {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px -24px rgba(18, 38, 31, 0.55);
+}
+
+/* Polaroid frames (gallery & home postcards): tilted by --tilt, straighten on hover. */
+.polaroid {
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.35s ease;
+}
+.polaroid:hover,
+.polaroid:focus-visible {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Contour-line pattern for dark sections (UI-Kit "contour pattern"). */
+.contour-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600' preserveAspectRatio='xMidYMid slice'%3E%3Cg fill='none' stroke='%23f5f1e8' stroke-opacity='.07'%3E%3Cellipse cx='1180' cy='120' rx='90' ry='60' transform='rotate(-14 1180 120)'/%3E%3Cellipse cx='1180' cy='120' rx='170' ry='115' transform='rotate(-14 1180 120)'/%3E%3Cellipse cx='1180' cy='120' rx='250' ry='170' transform='rotate(-14 1180 120)'/%3E%3Cellipse cx='1180' cy='120' rx='330' ry='225' transform='rotate(-14 1180 120)'/%3E%3Cellipse cx='1180' cy='120' rx='410' ry='280' transform='rotate(-14 1180 120)'/%3E%3Cellipse cx='160' cy='560' rx='120' ry='70'/%3E%3Cellipse cx='160' cy='560' rx='220' ry='130'/%3E%3Cellipse cx='160' cy='560' rx='320' ry='190'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Home page on phones: leave room above the footer for the bottom tab bar. */
+@media (max-width: 1023px) {
+  body:has([data-tabbar]) footer {
+    padding-bottom: 96px;
+  }
+}
+
 /* Blog articles and policy pages (sanitised HTML from the admin editor). */
 .prose-article {
   font-size: 17px;
-  line-height: 28px;
-  color: #343a46;
+  line-height: 1.65;
+  color: var(--color-body);
 }
 .prose-article > * + * {
   margin-top: 20px;
 }
 .prose-article h2 {
   margin-top: 36px;
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.2;
   color: var(--color-ink);
   scroll-margin-top: 24px;
 }
 .prose-article h3 {
   margin-top: 28px;
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.25;
   color: var(--color-ink);
 }
 .prose-article ul,
@@ -93,28 +166,36 @@ body {
 .prose-article li + li {
   margin-top: 6px;
 }
+.prose-article li::marker {
+  color: var(--color-gold);
+}
 .prose-article a {
-  color: var(--color-navy);
+  color: var(--color-gold-text);
+  font-weight: 600;
   text-decoration: underline;
 }
+.prose-article a:hover {
+  color: #7a3410;
+}
 .prose-article blockquote {
-  padding: 20px 24px;
-  border-radius: var(--radius-card);
-  background: var(--color-sand);
-  font-size: 16px;
-  line-height: 26px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--color-ink);
 }
 .prose-article img {
-  border-radius: var(--radius-card);
+  border-radius: 20px;
 }
 @media (min-width: 1024px) {
   .prose-article {
     font-size: 18px;
-    line-height: 30px;
   }
   .prose-article h2 {
-    font-size: 28px;
-    line-height: 36px;
+    font-size: 26px;
   }
 }
 

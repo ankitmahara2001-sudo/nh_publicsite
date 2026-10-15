@@ -14,7 +14,7 @@ export function CouponField({ initialCode = '', onApply, result }) {
   const messageId = `${id}-message`;
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-bold">
+      <label htmlFor={id} className="text-sm font-semibold">
         Coupon code <span className="font-medium text-muted">(optional)</span>
       </label>
       <form
@@ -33,13 +33,17 @@ export function CouponField({ initialCode = '', onApply, result }) {
           aria-describedby={messageId}
           aria-invalid={result && !result.valid ? true : undefined}
           className={cn(
-            'h-[46px] min-w-0 flex-1 rounded-[var(--radius-control)] border bg-surface px-3.5 text-[15px] uppercase focus:border-navy',
-            result && !result.valid ? 'border-danger' : 'border-input',
+            'h-12 min-w-0 flex-1 rounded-xl border-[1.5px] border-dashed px-3.5 text-[15px] font-bold tracking-[.06em] uppercase placeholder:font-medium placeholder:tracking-normal focus:border-pine focus:shadow-[0_0_0_4px_rgba(43,82,67,.15)] focus:outline-none',
+            result && !result.valid
+              ? 'border-danger bg-danger-bg'
+              : result?.valid
+                ? 'border-pine bg-success-bg'
+                : 'border-chip bg-page',
           )}
         />
         <button
           type="submit"
-          className="h-[46px] shrink-0 rounded-[var(--radius-control)] border border-navy bg-surface px-[18px] text-sm font-bold text-navy hover:bg-selected"
+          className="h-12 shrink-0 rounded-xl bg-navy px-[18px] text-sm font-bold text-page transition hover:bg-navy-2"
         >
           Apply
         </button>

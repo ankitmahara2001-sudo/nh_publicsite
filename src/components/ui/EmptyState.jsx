@@ -5,11 +5,11 @@ export function EmptyState({ title, text, children, className }) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center gap-2 rounded-[var(--radius-card)] border border-dashed border-input bg-surface px-6 py-12 text-center',
+        'flex flex-col items-center gap-2 rounded-[var(--radius-card)] border-[1.5px] border-dashed border-input bg-surface px-6 py-12 text-center',
         className,
       )}
     >
-      <p className="text-lg font-extrabold">{title}</p>
+      <p className="font-display text-[20px] leading-tight">{title}</p>
       {text && <p className="max-w-[460px] text-[15px] leading-6 text-muted">{text}</p>}
       {children && <div className="mt-2">{children}</div>}
     </div>

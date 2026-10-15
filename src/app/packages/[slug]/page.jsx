@@ -42,7 +42,7 @@ function packageJsonLd(pkg) {
     name: pkg.title,
     description: pkg.overview,
     image: [pkg.coverImageUrl, ...pkg.images.map((i) => i.url)].filter(Boolean),
-    brand: { '@type': 'Brand', name: 'Norther Harier' },
+    brand: { '@type': 'Brand', name: 'Northern Harrier' },
     ...(pkg.reviewCount
       ? {
           aggregateRating: {
@@ -91,8 +91,8 @@ export default async function PackagePage({ params }) {
       />
       <PackageHero pkg={pkg} />
       <SectionNav sections={sections} />
-      <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-5 pt-3 pb-10 lg:flex-row lg:items-start lg:gap-12 lg:px-20 lg:pt-12 lg:pb-20">
-        <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-14">
+      <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-5 pt-8 pb-12 lg:flex-row lg:items-start lg:gap-10 lg:px-8 lg:pt-11 lg:pb-[100px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
           <OverviewSection pkg={pkg} photoGrid={<PackagePhotos title={pkg.title} images={pkg.images} />} />
           <ItinerarySection itinerary={pkg.itinerary} />
           <InclusionsSection included={pkg.included} excluded={pkg.excluded} />
@@ -105,9 +105,9 @@ export default async function PackagePage({ params }) {
         <aside
           id="book"
           aria-label="Book this trip"
-          className="scroll-mt-20 lg:sticky lg:top-20 lg:w-[400px] lg:shrink-0"
+          className="scroll-mt-20 lg:sticky lg:top-20 lg:w-[380px] lg:shrink-0"
         >
-          <h2 className="mb-3 text-[22px] font-extrabold lg:sr-only">Choose your package</h2>
+          <h2 className="mb-3 text-[24px] leading-tight lg:sr-only">Choose your package</h2>
           <PackageBookingCard pkg={pkg} cancellationNote={settings.booking?.freeCancellationNote} />
         </aside>
         <div className="lg:hidden">

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/cn';
 
-/** White card on the page background (login, account pages): 20 px padding on phones, 32 px on desktop. */
+/** Paper card on the snow background (account pages, 404): 20 px padding on phones, 32 px on desktop. */
 export function Panel({ as: Tag = 'div', className, children, ...props }) {
   return (
     <Tag

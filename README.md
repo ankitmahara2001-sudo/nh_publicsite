@@ -1,7 +1,7 @@
-# Norther Harier — website
+# Northern Harrier — website
 
-Public website for Norther Harier (Uttarakhand tour packages): Next.js 16 App Router, JavaScript,
-Tailwind CSS 4. All content comes from the Norther Harier API.
+Public website for Northern Harrier (Uttarakhand tour packages): Next.js 16 App Router, JavaScript,
+Tailwind CSS 4. All content comes from the Northern Harrier API.
 
 ## Requirements
 

@@ -2,41 +2,46 @@ import { BLOG_CATEGORY_LABELS } from '@/domain/enums';
 import { formatDate } from '@/domain/format';
 import Link from 'next/link';
 import { Photo } from '@/components/ui/Photo';
+import { ArrowIcon } from '@/components/ui/SectionHeading';
 
-/** Large "Featured" article on top of the blog list (design/Blog + MobileBlog). */
+/** Large featured article on top of the blog list: photo banner with the title over it (design: Blog board). */
 export function FeaturedPost({ post }) {
+  const meta = [
+    post.publishedAt && formatDate(post.publishedAt),
+    post.readMinutes && `${post.readMinutes} min read`,
+  ]
+    .filter(Boolean)
+    .join(' · ');
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col gap-2.5 border-b border-line pb-[22px] text-ink lg:grid lg:grid-cols-[1.3fr_1fr] lg:gap-0 lg:overflow-hidden lg:rounded-[var(--radius-panel)] lg:border lg:bg-surface lg:pb-0"
+      className="group relative isolate flex min-h-[380px] items-end overflow-hidden rounded-3xl bg-navy-2 text-page lg:min-h-[440px] lg:rounded-[30px]"
     >
-      <div className="relative h-[210px] overflow-hidden rounded-[var(--radius-card)] lg:h-[380px] lg:rounded-none">
-        <Photo
-          src={post.coverImageUrl}
-          alt=""
-          priority
-          sizes="(min-width: 1024px) 720px, 100vw"
-          className="transition duration-500 group-hover:scale-[1.03]"
-        />
-      </div>
-      <div className="flex flex-col justify-center gap-2.5 lg:gap-4 lg:p-10">
-        <span className="text-xs text-muted lg:text-[13px]">
-          <span className="font-bold tracking-[1.2px] text-gold-text uppercase lg:tracking-[1.4px]">
-            Featured<span className="hidden lg:inline"> · {BLOG_CATEGORY_LABELS[post.category]}</span>
+      <Photo
+        src={post.coverImageUrl}
+        alt=""
+        priority
+        sizes="(min-width: 1280px) 1216px, 100vw"
+        className="-z-10 transition duration-500 group-hover:scale-[1.03]"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-navy/85 via-navy/30 to-transparent"
+      />
+      <div className="flex max-w-[820px] flex-col gap-3 p-6 lg:px-11 lg:py-10">
+        <span className="flex flex-wrap gap-2.5 text-xs font-bold tracking-[.12em] uppercase lg:text-[13px]">
+          <span className="rounded-full bg-gold px-3 py-[5px] text-ink">
+            Featured · {BLOG_CATEGORY_LABELS[post.category]}
           </span>
-          {post.publishedAt && ` · ${formatDate(post.publishedAt)}`}
-          {post.readMinutes ? ` · ${post.readMinutes} min read` : ''}
+          {meta && <span className="rounded-full bg-navy/80 px-3 py-[5px]">{meta}</span>}
         </span>
-        <h2 className="text-[22px] leading-7 font-extrabold group-hover:text-gold-text lg:text-[32px] lg:leading-10 lg:tracking-[-0.8px]">
+        <h2 className="text-[24px] leading-[1.06] lg:text-[clamp(28px,3.4vw,44px)] lg:leading-[1.04]">
           {post.title}
         </h2>
-        {post.excerpt && (
-          <p className="text-sm leading-[22px] text-muted lg:text-base lg:leading-[26px] lg:text-body">
-            {post.excerpt}
-          </p>
-        )}
-        <span className="hidden text-[15px] font-bold lg:block">
-          Read article <span aria-hidden="true">→</span>
+        {post.excerpt && <p className="max-w-[640px] text-page/85 lg:text-lg">{post.excerpt}</p>}
+        <span className="inline-flex items-center gap-2 font-bold text-gold-light">
+          Read article
+          <ArrowIcon />
         </span>
       </div>
     </Link>

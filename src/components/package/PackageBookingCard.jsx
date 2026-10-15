@@ -1,6 +1,6 @@
 'use client';
 
-import { formatRupees } from '@/domain/format';
+import { formatRupees, priceUnitLabel } from '@/domain/format';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { CouponField } from '@/components/booking/CouponField';
@@ -11,11 +11,14 @@ import { useQuote } from '@/components/booking/useQuote';
 import { buttonClasses } from '@/components/ui/Button';
 import { OptionCard } from '@/components/ui/OptionCard';
 import { defaultCounts, toBookingSearch, toQuoteRequest } from '@/lib/bookingSelection';
+import { cn } from '@/lib/cn';
 import { firstOpenDate } from '@/lib/dates';
+import { enquiryHref } from '@/lib/enquiry';
 
 /**
- * Booking card on the package page (design/PackageDetail.dc.html aside + mobile "Choose your package").
- * Live quote from the API; "Proceed to booking" opens /booking (which asks to log in first).
+ * Booking card on the package page (design: Package detail booking card — Deodar price header,
+ * date, travellers, offer code, dashed price breakdown).
+ * Live quote from the API; "Book this trip" opens /booking (which asks to log in first).
  */
 export function PackageBookingCard({ pkg, cancellationNote }) {
   const defaultPrice = pkg.prices.find((p) => p.isDefault) ?? pkg.prices[0];
@@ -50,7 +53,7 @@ export function PackageBookingCard({ pkg, cancellationNote }) {
     return (
       <p className="rounded-[var(--radius-panel)] border border-line bg-surface p-6 text-[15px] text-body">
         Prices for this trip are being updated.{' '}
-        <Link href="/contact" className="font-bold text-navy underline">
+        <Link href={enquiryHref(pkg.title)} className="font-bold text-navy underline">
           Send us an enquiry
         </Link>{' '}
         and we will share them.
@@ -68,83 +71,115 @@ export function PackageBookingCard({ pkg, cancellationNote }) {
   const countError = fieldErrors['counts.adults'] ?? fieldErrors['counts.units'] ?? fieldErrors.counts;
   const bookable = Boolean(quote) && !loading;
 
+  const struck = price.discountedPrice != null && price.originalPrice > price.sellingPrice;
+
   return (
     <>
-      <div className="flex flex-col gap-[18px] rounded-[var(--radius-panel)] border border-line bg-surface p-5 lg:p-6">
-        <div role="radiogroup" aria-label="Choose package type" className="flex flex-col gap-2.5">
-          <span className="text-[15px] font-bold">Choose package type</span>
-          {pkg.prices.map((option) => (
-            <OptionCard
-              key={option.id}
-              selected={option.id === priceId}
-              onSelect={() => choosePrice(option)}
-              title={option.label}
-              note={option.note}
-              aside={
-                <>
-                  <span className="text-base font-extrabold lg:text-[17px]">
-                    {formatRupees(option.sellingPrice)}
-                  </span>
-                  {option.discountedPrice != null && (
-                    <span className="text-xs text-muted line-through">
-                      {formatRupees(option.originalPrice)}
-                    </span>
-                  )}
-                </>
-              }
-            />
-          ))}
-          <span className="text-xs text-muted">Prices exclude GST.</span>
+      <div className="overflow-hidden rounded-[var(--radius-panel)] border border-line bg-surface shadow-[0_30px_60px_-36px_rgba(18,38,31,.6)]">
+        <div className="flex flex-col gap-0.5 bg-navy px-6 py-[22px] text-page">
+          <span className="text-[13px] text-footer-text">
+            From{' '}
+            {struck && (
+              <s>
+                <span className="sr-only">was </span>
+                {formatRupees(price.originalPrice)}
+              </s>
+            )}
+            {struck && ' · '}
+            {priceUnitLabel(price.priceType, price.label)}
+          </span>
+          <span className="font-display text-[30px] leading-[1.1]">{formatRupees(price.sellingPrice)}</span>
         </div>
+        <div className="flex flex-col gap-[18px] px-5 py-[22px] lg:px-6">
+          <div role="radiogroup" aria-label="Choose package type" className="flex flex-col gap-2.5">
+            <span className="text-sm font-semibold">Choose package type</span>
+            {pkg.prices.map((option) => (
+              <OptionCard
+                key={option.id}
+                selected={option.id === priceId}
+                onSelect={() => choosePrice(option)}
+                title={option.label}
+                note={option.note}
+                aside={
+                  <>
+                    <span className="font-display text-lg">{formatRupees(option.sellingPrice)}</span>
+                    {option.discountedPrice != null && (
+                      <span className="text-xs text-muted line-through">
+                        {formatRupees(option.originalPrice)}
+                      </span>
+                    )}
+                  </>
+                }
+              />
+            ))}
+            <span className="text-xs text-muted">Prices exclude GST.</span>
+          </div>
 
-        <TravelDateField
-          pkg={pkg}
-          departureId={departureId}
-          onDepartureChange={setDepartureId}
-          travelDate={travelDate}
-          onTravelDateChange={setTravelDate}
-          error={dateError}
-        />
+          <TravelDateField
+            pkg={pkg}
+            departureId={departureId}
+            onDepartureChange={setDepartureId}
+            travelDate={travelDate}
+            onTravelDateChange={setTravelDate}
+            error={dateError}
+          />
 
-        <TravellerCounters price={price} counts={counts} setCount={setCount} error={countError} />
+          <TravellerCounters price={price} counts={counts} setCount={setCount} error={countError} />
 
-        <CouponField onApply={setCouponCode} result={couponCode ? quote?.coupon : null} />
+          <CouponField onApply={setCouponCode} result={couponCode ? quote?.coupon : null} />
 
-        <div className="border-t border-line pt-4" aria-live="polite" aria-busy={loading}>
-          {quote ? (
-            <PriceBreakdown quote={quote} className={loading ? 'opacity-60' : ''} />
-          ) : error && !dateError && !countError ? (
-            <p className="text-sm font-semibold text-danger">{error}</p>
-          ) : (
-            <p className="text-sm text-muted">
-              {loading ? 'Calculating your price…' : 'Choose a date to see the total.'}
-            </p>
-          )}
+          <div className="border-t-2 border-dashed border-dash pt-3.5" aria-live="polite" aria-busy={loading}>
+            {quote ? (
+              <PriceBreakdown quote={quote} className={loading ? 'opacity-60' : ''} />
+            ) : error && !dateError && !countError ? (
+              <p className="text-sm font-semibold text-danger">{error}</p>
+            ) : (
+              <p className="text-sm text-muted">
+                {loading ? 'Calculating your price…' : 'Choose a date to see the total.'}
+              </p>
+            )}
+          </div>
+
+          <Link
+            href={bookingHref}
+            aria-disabled={!bookable}
+            className={buttonClasses({
+              variant: 'accent',
+              size: 'lg',
+              block: true,
+              className: cn(
+                'shadow-[0_12px_26px_-14px_rgba(140,70,10,.8)]',
+                !bookable && 'pointer-events-none opacity-50',
+              ),
+            })}
+          >
+            Book this trip
+          </Link>
+          <Link
+            href={enquiryHref(pkg.title)}
+            className={buttonClasses({ variant: 'outline', size: 'md', block: true })}
+          >
+            Send an enquiry
+          </Link>
+          <span className="text-center text-[13px] text-muted">
+            Secure payments by Razorpay · UPI, cards, netbanking
+          </span>
+          {cancellationNote && <span className="text-center text-[13px] text-muted">{cancellationNote}</span>}
         </div>
-
-        <Link
-          href={bookingHref}
-          aria-disabled={!bookable}
-          className={buttonClasses({
-            size: 'lg',
-            block: true,
-            className: !bookable ? 'pointer-events-none opacity-50' : '',
-          })}
-        >
-          Proceed to booking
-        </Link>
-        {cancellationNote && <span className="text-center text-[13px] text-muted">{cancellationNote}</span>}
       </div>
 
       {/* Phones: sticky total + Book now (design/MobilePackageDetail.dc.html). */}
-      <div className="fixed inset-x-0 bottom-0 z-30 flex h-[76px] items-center justify-between gap-3 border-t border-line bg-surface px-5 pb-[env(safe-area-inset-bottom)] lg:hidden">
-        <span className="flex flex-col">
+      <div className="fixed inset-x-0 bottom-0 z-30 flex h-[76px] items-center justify-between gap-3 border-t border-line bg-surface px-5 pb-[env(safe-area-inset-bottom)] shadow-[0_-16px_30px_-20px_rgba(18,38,31,.45)] lg:hidden">
+        <span className="flex flex-col leading-tight">
           <span className="text-xs text-muted">{quote ? 'Total incl. GST' : 'From'}</span>
-          <span className="text-[19px] font-extrabold">
+          <span className="font-display text-[21px]">
             {quote ? formatRupees(quote.total) : formatRupees(price.sellingPrice)}
           </span>
         </span>
-        <Link href={bookable ? bookingHref : '#book'} className={buttonClasses({ size: 'lg' })}>
+        <Link
+          href={bookable ? bookingHref : '#book'}
+          className={buttonClasses({ variant: 'accent', size: 'lg' })}
+        >
           Book now
         </Link>
       </div>

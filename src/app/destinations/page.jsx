@@ -28,28 +28,25 @@ const packageCountLabel = (count) => `${count} ${count === 1 ? 'package' : 'pack
 
 function DestinationCard({ destination }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface">
-      <div className="relative h-[180px] lg:h-[200px]">
+    <article className="lift flex flex-col overflow-hidden rounded-[22px] border border-line bg-surface">
+      <div className="relative h-[200px] lg:h-[230px]">
         <Photo
           src={destination.coverImageUrl}
           alt={destination.name}
           sizes="(min-width: 1024px) 420px, (min-width: 768px) 50vw, 100vw"
         />
-        <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
-        <span className="absolute bottom-3.5 left-4 text-xs font-bold tracking-[1.6px] text-white uppercase">
-          {destination.district}
-        </span>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-[18px] lg:p-5">
-        <h2 className="text-xl font-extrabold lg:text-[21px]">{destination.name}</h2>
+      <div className="flex flex-1 flex-col gap-1.5 px-[22px] pt-5 pb-4">
+        <span className="text-xs font-bold tracking-[.16em] text-pine uppercase">{destination.district}</span>
+        <h2 className="text-[22px] leading-[1.1]">{destination.name}</h2>
         {destination.shortDescription && (
-          <p className="text-sm leading-[22px] text-muted">{destination.shortDescription}</p>
+          <p className="text-[15px] leading-6 text-muted">{destination.shortDescription}</p>
         )}
         <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="text-sm font-bold">{packageCountLabel(destination.packageCount)}</span>
+          <span className="font-semibold text-gold-text">{packageCountLabel(destination.packageCount)}</span>
           <Link
             href={buildHref('/packages', { destination: destination.slug })}
-            className="inline-flex h-11 items-center text-sm font-bold text-navy hover:text-gold-text"
+            className="inline-flex h-11 items-center font-bold text-ink hover:text-gold-text"
           >
             Explore <span className="sr-only">&nbsp;{destination.name} packages</span>
             <span aria-hidden="true">&nbsp;→</span>
@@ -84,12 +81,13 @@ export default async function DestinationsPage({ searchParams }) {
         imageUrl={hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Destinations' }]}
         active="destinations"
+        overline="pick a valley"
       />
 
       <Container
         as="section"
         aria-label="Destinations"
-        className="flex flex-col gap-5 pt-6 pb-10 lg:gap-8 lg:pt-14 lg:pb-20"
+        className="flex flex-col gap-5 pt-6 pb-12 lg:gap-8 lg:pt-12 lg:pb-[100px]"
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <FilterTabs label="Region" items={tabs} />
@@ -99,7 +97,7 @@ export default async function DestinationsPage({ searchParams }) {
         </div>
 
         {shown.length > 0 ? (
-          <div className="grid gap-[18px] md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <div className="grid gap-[18px] md:grid-cols-2 lg:grid-cols-3 lg:gap-[22px]">
             {shown.map((destination) => (
               <DestinationCard key={destination.id} destination={destination} />
             ))}

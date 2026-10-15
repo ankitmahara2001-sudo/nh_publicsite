@@ -29,7 +29,10 @@ const confirmationHref = (bookingNumber) => `/booking/confirmed?booking=${encode
 
 /** The package page's choice from the URL, checked against what the package offers now. */
 function initialTrip(pkg, selection) {
-  const price = pkg.prices.find((p) => p.id === selection.priceId) ?? pkg.prices.find((p) => p.isDefault) ?? pkg.prices[0];
+  const price =
+    pkg.prices.find((p) => p.id === selection.priceId) ??
+    pkg.prices.find((p) => p.isDefault) ??
+    pkg.prices[0];
   const hasCounts = Object.values(selection.counts).some(Boolean);
   const openDepartures = pkg.departures.filter((d) => !d.soldOut);
   const departure = openDepartures.find((d) => d.id === selection.departureId) ?? openDepartures[0];
@@ -48,7 +51,8 @@ const blankTraveller = (fullName = '') => ({ fullName, age: '', gender: '' });
 /** Groups "travellers.0.age"-style API errors by the step that shows them. */
 function stepForFields(fields) {
   const keys = Object.keys(fields);
-  if (keys.some((key) => TRIP_FIELDS.some((field) => key === field || key.startsWith(`${field}.`)))) return TRIP_STEP;
+  if (keys.some((key) => TRIP_FIELDS.some((field) => key === field || key.startsWith(`${field}.`))))
+    return TRIP_STEP;
   if (keys.length) return TRAVELLERS_STEP;
   return null;
 }
@@ -117,7 +121,8 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
 
   const tripErrors = {
     date: errors.departureId ?? errors.travelDate ?? quoteErrors.departureId ?? quoteErrors.travelDate,
-    counts: errors.counts ?? quoteErrors['counts.adults'] ?? quoteErrors['counts.units'] ?? quoteErrors.counts,
+    counts:
+      errors.counts ?? quoteErrors['counts.adults'] ?? quoteErrors['counts.units'] ?? quoteErrors.counts,
     pickupPoint: errors.pickupPoint,
   };
 
@@ -145,7 +150,11 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
         leadName: travellers[0].fullName.trim(),
         leadPhone: details.leadPhone.trim(),
         specialRequests: details.specialRequests.trim() || undefined,
-        travellers: travellers.map((t) => ({ fullName: t.fullName.trim(), age: Number(t.age), gender: t.gender })),
+        travellers: travellers.map((t) => ({
+          fullName: t.fullName.trim(),
+          age: Number(t.age),
+          gender: t.gender,
+        })),
         acceptTerms: details.acceptTerms,
       });
       setCreated(data);
@@ -196,11 +205,15 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
         },
         onFailure: (reason) => {
           setBusy(false);
-          setMessage(`Payment failed${reason ? `: ${reason}` : ''}. Your seats are held for 30 minutes — press Pay to try again.`);
+          setMessage(
+            `Payment failed${reason ? `: ${reason}` : ''}. Your seats are held for 30 minutes — press Pay to try again.`,
+          );
         },
         onDismiss: () => {
           setBusy(false);
-          setMessage('Payment was not completed. Your seats are held for 30 minutes — press Pay to try again.');
+          setMessage(
+            'Payment was not completed. Your seats are held for 30 minutes — press Pay to try again.',
+          );
         },
       });
     } catch (error) {
@@ -215,7 +228,7 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
         <Link href={`/packages/${pkg.slug}`} className="text-sm text-muted hover:underline">
           ← Back to {pkg.title}
         </Link>
-        <h1 className="text-[26px] font-extrabold tracking-[-0.6px] lg:text-[40px] lg:tracking-[-1px]">
+        <h1 className="text-[22px] font-extrabold tracking-[-0.6px] lg:text-[32px] lg:tracking-[-1px]">
           Complete your booking
         </h1>
       </div>
@@ -225,7 +238,13 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-10">
         <div className="order-2 flex min-w-0 flex-1 flex-col gap-5 rounded-[14px] border border-line bg-surface p-5 lg:order-1 lg:gap-[22px] lg:rounded-[var(--radius-panel)] lg:p-8">
           {step === TRIP_STEP && (
-            <TripStep pkg={pkg} trip={trip} setTrip={setTrip} pickupPoints={booking.pickupPoints} errors={tripErrors} />
+            <TripStep
+              pkg={pkg}
+              trip={trip}
+              setTrip={setTrip}
+              pickupPoints={booking.pickupPoints}
+              errors={tripErrors}
+            />
           )}
           {step === TRAVELLERS_STEP && (
             <TravellersStep
@@ -237,7 +256,12 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
             />
           )}
           {step === PAYMENT_STEP && (
-            <PaymentStep details={details} setDetails={setDetails} termsText={booking.termsText} errors={errors} />
+            <PaymentStep
+              details={details}
+              setDetails={setDetails}
+              termsText={booking.termsText}
+              errors={errors}
+            />
           )}
 
           {paid ? (
@@ -259,7 +283,11 @@ export function BookingFlow({ pkg, selection, customer, booking, companyName }) 
             </Button>
             {step === PAYMENT_STEP ? (
               <Button variant="accent" size="lg" onClick={pay} disabled={busy || !quote}>
-                {paid ? 'Confirming…' : busy ? 'Opening payment…' : `Pay ${formatRupees(created?.checkout.amount ?? quote?.payNow ?? 0)}`}
+                {paid
+                  ? 'Confirming…'
+                  : busy
+                    ? 'Opening payment…'
+                    : `Pay ${formatRupees(created?.checkout.amount ?? quote?.payNow ?? 0)}`}
               </Button>
             ) : (
               <Button size="lg" onClick={goForward}>

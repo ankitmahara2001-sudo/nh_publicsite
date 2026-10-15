@@ -4,6 +4,7 @@ import { formatDate, formatDateRange } from '@/domain/format';
 import Link from 'next/link';
 import { Input } from '@/components/ui/FormFields';
 import { OptionCard } from '@/components/ui/OptionCard';
+import { enquiryHref } from '@/lib/enquiry';
 
 function seatsLabel(departure) {
   if (departure.soldOut) return 'Sold out';
@@ -16,15 +17,22 @@ function seatsLabel(departure) {
  * for fixed_date packages, a date picker for all_season ones.
  * Used by the package booking card and booking step 1.
  */
-export function TravelDateField({ pkg, departureId, onDepartureChange, travelDate, onTravelDateChange, error }) {
+export function TravelDateField({
+  pkg,
+  departureId,
+  onDepartureChange,
+  travelDate,
+  onTravelDateChange,
+  error,
+}) {
   if (pkg.availabilityType === 'fixed_date') {
     return (
       <div role="radiogroup" aria-label="Departure date" className="flex flex-col gap-2">
-        <span className="text-sm font-bold">Departure date</span>
+        <span className="text-sm font-semibold">Departure date</span>
         {pkg.departures.length === 0 ? (
           <p className="text-sm text-muted">
             No departures are open right now.{' '}
-            <Link href="/contact" className="font-bold text-navy underline">
+            <Link href={enquiryHref(pkg.title)} className="font-bold text-navy underline">
               Ask us for the next dates
             </Link>
             .
@@ -39,7 +47,11 @@ export function TravelDateField({ pkg, departureId, onDepartureChange, travelDat
                 onSelect={() => onDepartureChange(d.id)}
                 title={formatDateRange(d.startDate, d.endDate)}
                 aside={
-                  <span className={d.soldOut ? 'text-[13px] font-bold text-danger' : 'text-[13px] font-bold text-success'}>
+                  <span
+                    className={
+                      d.soldOut ? 'text-[13px] font-bold text-danger' : 'text-[13px] font-bold text-success'
+                    }
+                  >
                     {seatsLabel(d)}
                   </span>
                 }
@@ -66,7 +78,10 @@ export function TravelDateField({ pkg, departureId, onDepartureChange, travelDat
         <p className="text-xs text-muted">
           Not available:{' '}
           {pkg.blockedDates
-            .map((b) => `${formatDate(b.startDate)} – ${formatDate(b.endDate)}${b.reason ? ` (${b.reason})` : ''}`)
+            .map(
+              (b) =>
+                `${formatDate(b.startDate)} – ${formatDate(b.endDate)}${b.reason ? ` (${b.reason})` : ''}`,
+            )
             .join('; ')}
         </p>
       )}

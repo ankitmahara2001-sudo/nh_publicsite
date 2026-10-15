@@ -4,22 +4,37 @@ import { useId, useState } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
- * Single-open accordion (itinerary days, FAQs). `items`: [{ key, header (node), content (node) }].
+ * Single-open accordion (itinerary days, FAQs). `items`: [{ key, header (node), content (node), marker? }].
  * The open panel can be closed again; `defaultOpen` is an index or -1.
+ * `variant="faq"`: paper cards (design "Good to know"). `variant="itinerary"`: the day-by-day trail —
+ * a round `marker` ("01") per item, linked by a dashed line; the open day's marker is marigold.
  */
 export function Accordion({ items, defaultOpen = 0, variant = 'faq' }) {
   const [open, setOpen] = useState(defaultOpen);
   const baseId = useId();
+  const trail = variant === 'itinerary';
 
   return (
-    <div className="flex flex-col gap-2.5 lg:gap-3">
+    <div className={cn('flex flex-col', !trail && 'gap-2.5')}>
       {items.map((item, index) => {
         const isOpen = index === open;
         const buttonId = `${baseId}-button-${index}`;
         const panelId = `${baseId}-panel-${index}`;
+        const last = index === items.length - 1;
         return (
-          <div key={item.key} className="overflow-hidden rounded-xl border border-line bg-surface">
-            <h3>
+          <div
+            key={item.key}
+            className={cn(
+              trail
+                ? cn(
+                    'relative',
+                    !last &&
+                      'pb-7 before:absolute before:top-[64px] before:bottom-1.5 before:left-[25px] before:border-l-2 before:border-dashed before:border-chip',
+                  )
+                : 'overflow-hidden rounded-2xl border border-line bg-surface',
+            )}
+          >
+            <h3 className="font-sans">
               <button
                 id={buttonId}
                 type="button"
@@ -27,15 +42,30 @@ export function Accordion({ items, defaultOpen = 0, variant = 'faq' }) {
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? -1 : index)}
                 className={cn(
-                  'flex w-full items-center gap-3 text-left text-ink lg:gap-4',
-                  variant === 'itinerary'
-                    ? 'min-h-14 px-3.5 py-3 lg:min-h-16 lg:px-5 lg:py-4'
-                    : 'min-h-[52px] justify-between px-3.5 py-3 lg:min-h-14 lg:px-5 lg:py-3.5',
+                  'flex w-full items-center text-left font-sans text-ink',
+                  trail
+                    ? 'min-h-[52px] gap-4 lg:gap-5'
+                    : 'min-h-14 justify-between gap-3 px-[18px] py-3.5 text-[17px] font-bold lg:gap-4 lg:px-[22px] lg:py-[18px]',
                 )}
               >
+                {trail && item.marker && (
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'flex size-[52px] shrink-0 items-center justify-center rounded-full font-display text-lg',
+                      isOpen
+                        ? 'bg-gold text-ink'
+                        : last
+                          ? 'border-2 border-navy bg-surface text-ink'
+                          : 'bg-navy text-gold-light',
+                    )}
+                  >
+                    {item.marker}
+                  </span>
+                )}
                 <span className="flex-1">{item.header}</span>
-                <span aria-hidden="true" className="text-lg text-muted lg:text-xl">
-                  {isOpen ? '−' : '+'}
+                <span aria-hidden="true" className="w-5 text-center text-xl text-muted">
+                  {isOpen ? '–' : '+'}
                 </span>
               </button>
             </h3>

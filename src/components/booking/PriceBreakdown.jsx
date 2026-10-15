@@ -40,11 +40,11 @@ export function PriceBreakdown({ quote, className }) {
         <Row
           label="Total"
           value={formatRupees(quote.total)}
-          className="pt-1.5 text-[17px] font-extrabold lg:text-lg [&_dt]:text-ink"
+          className="items-baseline pt-1 font-bold [&_dd]:font-display [&_dd]:text-[24px] [&_dd]:font-normal [&_dt]:text-ink"
         />
       </dl>
       {/* A second list: a <dl> may only contain dt/dd groups, not a styled panel. */}
-      <dl className="flex flex-col gap-2 rounded-[var(--radius-control)] bg-sand-light px-3.5 py-3">
+      <dl className="flex flex-col gap-2 rounded-xl bg-sand-light px-3.5 py-3">
         <Row
           label={`Pay now (${quote.bookingAmountPercent}%)`}
           value={formatRupees(quote.payNow)}

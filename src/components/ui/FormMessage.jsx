@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 
 const TONES = {
-  error: 'bg-[#fbecea] text-danger',
+  error: 'bg-danger-bg text-danger',
   success: 'bg-success-bg text-success-text',
   info: 'bg-sand-light text-body',
 };
@@ -15,11 +15,7 @@ export function FormMessage({ tone = 'error', className, children }) {
   return (
     <p
       role={tone === 'error' ? 'alert' : 'status'}
-      className={cn(
-        'rounded-[var(--radius-control)] px-3.5 py-3 text-sm leading-[22px] font-semibold',
-        TONES[tone],
-        className,
-      )}
+      className={cn('rounded-xl px-3.5 py-2.5 text-sm leading-[22px] font-semibold', TONES[tone], className)}
     >
       {children}
     </p>

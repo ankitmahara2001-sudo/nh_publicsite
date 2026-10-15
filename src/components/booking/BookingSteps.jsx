@@ -36,10 +36,7 @@ export function BookingSteps({ step }) {
               {done ? '✓' : number}
             </span>
             <span
-              className={cn(
-                'text-xs font-bold lg:text-[15px]',
-                done || current ? 'text-ink' : 'text-muted',
-              )}
+              className={cn('text-xs font-bold lg:text-[15px]', done || current ? 'text-ink' : 'text-muted')}
             >
               {label}
               {done && <span className="sr-only"> (done)</span>}

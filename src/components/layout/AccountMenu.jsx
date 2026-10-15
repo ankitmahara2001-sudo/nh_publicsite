@@ -24,8 +24,11 @@ function UserIcon() {
   );
 }
 
-/** Header account icon: "Log in" link when logged out, a small menu when logged in. */
-export function AccountMenu({ light }) {
+/**
+ * Header account control: "Login" link when logged out, a small menu when logged in.
+ * `compact` shows the icon only (phone header).
+ */
+export function AccountMenu({ light, compact = false }) {
   const customer = useCustomer();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -43,14 +46,16 @@ export function AccountMenu({ light }) {
   }, [open]);
 
   const iconButton = cn(
-    'flex size-11 items-center justify-center rounded-full',
-    light ? 'text-white hover:bg-white/10' : 'text-ink hover:bg-selected',
+    'flex h-11 items-center justify-center gap-2 rounded-full text-[15px] font-semibold transition',
+    compact ? 'w-11' : 'px-3.5',
+    light ? 'text-page hover:bg-page/10' : 'text-ink hover:bg-selected',
   );
 
   if (!customer) {
     return (
       <Link href="/login" aria-label="Log in or create an account" className={iconButton}>
         <UserIcon />
+        {!compact && <span aria-hidden="true">Login</span>}
       </Link>
     );
   }
@@ -66,13 +71,16 @@ export function AccountMenu({ light }) {
         className={iconButton}
       >
         <UserIcon />
+        {!compact && <span aria-hidden="true">Account</span>}
       </button>
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-30 mt-2 w-56 overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface py-1 text-ink shadow-xl"
+          className="absolute right-0 z-30 mt-2 w-60 overflow-hidden rounded-[18px] border border-line bg-surface py-1.5 text-ink shadow-[0_30px_60px_-30px_rgba(18,38,31,.6)]"
         >
-          <p className="truncate px-4 py-2 text-xs text-muted">{customer.name || customer.email}</p>
+          <p className="truncate px-4 pt-2 pb-1 font-hand text-lg text-gold-text">
+            {customer.name || customer.email}
+          </p>
           {ACCOUNT_LINKS.map((link) => (
             <Link
               key={link.href}

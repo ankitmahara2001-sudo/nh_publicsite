@@ -52,7 +52,7 @@ function FilterFields({ filters, onChange, destinations, months, idPrefix }) {
         ]}
       />
       <fieldset>
-        <legend className="pb-1 text-sm font-bold">Duration</legend>
+        <legend className="pb-1 text-xs font-bold tracking-[.16em] text-pine uppercase">Duration</legend>
         {DURATION_OPTIONS.map((option) => (
           <Checkbox
             key={option.value}
@@ -64,7 +64,9 @@ function FilterFields({ filters, onChange, destinations, months, idPrefix }) {
         ))}
       </fieldset>
       <fieldset>
-        <legend className="pb-1 text-sm font-bold">Budget per person</legend>
+        <legend className="pb-1 text-xs font-bold tracking-[.16em] text-pine uppercase">
+          Budget per person
+        </legend>
         {BUDGET_OPTIONS.map((option) => (
           <Checkbox
             key={option.value}
@@ -99,10 +101,10 @@ export function FilterSidebar({ filters, destinations, months }) {
     <aside
       aria-label="Filters"
       aria-busy={pending}
-      className="hidden w-[280px] shrink-0 flex-col gap-[26px] rounded-[var(--radius-card)] border border-line bg-surface p-6 lg:flex"
+      className="sticky top-6 hidden w-[280px] shrink-0 flex-col gap-6 rounded-[var(--radius-card)] border border-line bg-surface p-6 lg:flex"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-extrabold">Filters</h2>
+        <h2 className="text-[21px]">Filters</h2>
         {activeFilterCount(filters) > 0 && (
           <button
             type="button"
@@ -136,7 +138,7 @@ export function SortSelect({ id, filters, className }) {
         id={id}
         value={filters.sort}
         onChange={(e) => apply({ ...filters, sort: e.target.value })}
-        className="h-[46px] w-full rounded-[var(--radius-control)] border border-input bg-surface px-2.5 text-sm text-ink focus:border-navy lg:h-11 lg:w-auto lg:px-3"
+        className="h-12 w-full rounded-full border-[1.5px] border-input bg-surface px-4 text-sm font-semibold text-ink focus:border-pine focus:outline-none lg:h-11 lg:w-auto"
       >
         {SORT_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
@@ -171,7 +173,7 @@ export function FilterSheet({ filters, destinations, months }) {
         type="button"
         onClick={open}
         aria-haspopup="dialog"
-        className="h-[46px] flex-1 rounded-[var(--radius-control)] border border-input bg-surface text-sm font-bold text-ink"
+        className="h-12 flex-1 rounded-full bg-navy text-sm font-bold text-page"
       >
         Filters{count > 0 ? ` (${count})` : ''}
       </button>
@@ -179,16 +181,17 @@ export function FilterSheet({ filters, destinations, months }) {
         ref={dialogRef}
         aria-label="Filters"
         onClick={(e) => e.target === e.currentTarget && close()}
-        className="m-0 mt-auto max-h-[90dvh] w-full max-w-none rounded-t-[20px] bg-surface p-0 text-ink backdrop:bg-navy/60 lg:hidden"
+        className="m-0 mt-auto max-h-[90dvh] w-full max-w-none rounded-t-[28px] bg-page p-0 text-ink backdrop:bg-navy/60 lg:hidden"
       >
         <div className="flex flex-col gap-[18px] p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+          <span aria-hidden="true" className="h-[5px] w-11 self-center rounded-full bg-input" />
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-extrabold">Filters</h2>
+            <h2 className="text-[21px]">Filters</h2>
             <button
               type="button"
               onClick={close}
               aria-label="Close filters"
-              className="flex size-11 items-center justify-center text-2xl"
+              className="flex size-11 items-center justify-center text-[21px]"
             >
               <span aria-hidden="true">×</span>
             </button>

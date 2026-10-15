@@ -32,7 +32,7 @@ export default async function PolicyPage({ params }) {
       <main className="flex-1 px-5 py-8 lg:py-16">
         <article className="mx-auto flex max-w-[820px] flex-col gap-4 rounded-[var(--radius-panel)] border border-line bg-surface p-6 lg:gap-5 lg:p-12">
           <Breadcrumb light={false} items={[{ label: 'Home', href: '/' }, { label: policy.title }]} />
-          <h1 className="text-[32px] leading-9 font-extrabold tracking-[-0.8px] lg:text-[40px] lg:leading-[48px] lg:tracking-[-1px]">
+          <h1 className="text-[26px] leading-9 font-extrabold tracking-[-0.8px] lg:text-[32px] lg:leading-[48px] lg:tracking-[-1px]">
             {policy.title}
           </h1>
           {policy.content ? (

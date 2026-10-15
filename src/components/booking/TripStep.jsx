@@ -13,7 +13,7 @@ export function TripStep({ pkg, trip, setTrip, pickupPoints, errors }) {
 
   return (
     <div className="flex flex-col gap-5 lg:gap-[22px]">
-      <h2 className="text-xl font-extrabold lg:text-2xl">Trip details</h2>
+      <h2 className="text-xl font-extrabold lg:text-[21px]">Trip details</h2>
 
       <div className="grid gap-4 lg:grid-cols-2 lg:gap-[18px]">
         <TravelDateField

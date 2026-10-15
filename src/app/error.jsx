@@ -16,14 +16,15 @@ export default function ErrorPage({ error, retry }) {
 
   return (
     <CenteredPage className="text-center">
-      <h1 className="text-[28px] leading-9 font-extrabold tracking-[-0.6px] lg:text-[32px] lg:leading-10">
-        Something went wrong
-      </h1>
-      <p className="mt-3 text-[15px] leading-6 text-body lg:text-base">
+      <p className="font-hand text-[20px] text-gold-text">a rockfall on the road —</p>
+      <h1 className="mt-2 text-[26px] leading-[1.1] lg:text-[32px]">Something went wrong</h1>
+      <p className="mt-3 text-[15px] leading-6 text-muted lg:text-base">
         We couldn’t load this page. Please try again in a moment.
       </p>
       <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-        <Button onClick={() => retry()}>Try again</Button>
+        <Button variant="accent" onClick={() => retry()}>
+          Try again
+        </Button>
         <Button href="/" variant="outline">
           Go to home
         </Button>

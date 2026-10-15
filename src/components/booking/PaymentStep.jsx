@@ -19,7 +19,7 @@ const DEFAULT_TERMS = 'I agree to the booking terms and cancellation policy';
 export function PaymentStep({ details, setDetails, termsText, errors }) {
   return (
     <div className="flex flex-col gap-4 lg:gap-[22px]">
-      <h2 className="text-xl font-extrabold lg:text-2xl">Payment</h2>
+      <h2 className="text-xl font-extrabold lg:text-[21px]">Payment</h2>
       <p className="text-sm leading-[22px] text-body lg:text-base lg:leading-[26px]">
         You will pay securely on Razorpay. Your booking is confirmed as soon as the payment goes through.
       </p>

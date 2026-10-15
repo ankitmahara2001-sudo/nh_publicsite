@@ -78,7 +78,7 @@ export default async function BookingConfirmedPage({ searchParams }) {
       <Header variant="solid" active="packages" />
       {booking.status === 'pending' && <RefreshWhilePending />}
       <main className="flex flex-1 flex-col items-center gap-5 bg-page px-5 pt-8 pb-10 lg:gap-7 lg:pt-16 lg:pb-20">
-        <div className="flex w-full max-w-[820px] flex-col items-center gap-4 rounded-[20px] border border-line bg-surface p-6 text-center lg:gap-[18px] lg:p-12">
+        <div className="flex w-full max-w-[820px] flex-col items-center gap-4 rounded-[var(--radius-panel)] border border-line bg-surface p-6 text-center lg:gap-[18px] lg:p-12">
           <span
             aria-hidden="true"
             className={`flex size-16 items-center justify-center rounded-full lg:size-20 ${confirmed ? 'bg-success-bg' : 'bg-sand'}`}
@@ -88,7 +88,7 @@ export default async function BookingConfirmedPage({ searchParams }) {
               height="40"
               viewBox="0 0 24 24"
               fill="none"
-              stroke={confirmed ? '#2E7D4F' : '#7A4E12'}
+              stroke={confirmed ? '#2B5243' : '#A2481A'}
               strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -97,7 +97,7 @@ export default async function BookingConfirmedPage({ searchParams }) {
               <path d={ICON_PATHS[icon]} />
             </svg>
           </span>
-          <h1 className="text-[28px] leading-[34px] font-extrabold tracking-[-0.6px] lg:text-[40px] lg:leading-[48px] lg:tracking-[-1px]">
+          <h1 className="text-[24px] leading-[34px] font-extrabold tracking-[-0.6px] lg:text-[32px] lg:leading-[48px] lg:tracking-[-1px]">
             {title}
           </h1>
           <p className="text-[15px] leading-6 text-body lg:text-[17px] lg:leading-[27px]">{text}</p>
@@ -121,10 +121,13 @@ export default async function BookingConfirmedPage({ searchParams }) {
         </div>
 
         {confirmed && nextSteps.length > 0 && (
-          <section aria-label="What happens next" className="grid w-full max-w-[820px] gap-3 lg:grid-cols-3 lg:gap-4">
+          <section
+            aria-label="What happens next"
+            className="grid w-full max-w-[820px] gap-3 lg:grid-cols-3 lg:gap-4"
+          >
             {nextSteps.map((step, index) => (
               <div key={step.title} className="rounded-[14px] border border-line bg-surface p-5">
-                <div className="text-[22px] font-extrabold text-gold">{pad(index + 1)}</div>
+                <div className="text-[20px] font-extrabold text-gold">{pad(index + 1)}</div>
                 <div className="mt-1.5 text-[15px] font-bold">{step.title}</div>
                 <div className="mt-1 text-sm leading-[21px] text-muted">{step.text}</div>
               </div>

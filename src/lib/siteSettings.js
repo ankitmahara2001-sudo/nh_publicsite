@@ -5,7 +5,7 @@ const hero = (title) => ({ title, subtitle: '', imageUrl: '' });
 
 const defaults = {
   company: {
-    name: 'Norther Harier',
+    name: 'Northern Harrier',
     legalName: '',
     tagline: '',
     phone: '',
@@ -19,16 +19,16 @@ const defaults = {
   },
   social: {},
   seo: {
-    defaultTitle: 'Norther Harier',
-    titleTemplate: '%s | Norther Harier',
-    description: 'Explore Uttarakhand with Norther Harier.',
+    defaultTitle: 'Northern Harrier',
+    titleTemplate: '%s | Northern Harrier',
+    description: 'Explore Uttarakhand with Northern Harrier.',
     ogImageUrl: '',
   },
   home: {
     hero: {
       overline: 'EXPLORE UTTARAKHAND',
       heading: 'Discover your next journey',
-      subheading: 'Explore destinations and travel packages with Norther Harier.',
+      subheading: 'Explore destinations and travel packages with Northern Harrier.',
       primaryCtaLabel: 'Explore packages',
       secondaryCtaLabel: 'Contact us',
     },
@@ -36,7 +36,7 @@ const defaults = {
     packages: section('Travel packages', 'View all packages'),
     offers: section('Offers', 'All offers'),
     gallery: section('Gallery', 'Open gallery'),
-    about: { ...section('About Norther Harier', 'About us'), imageUrl: '', stats: [] },
+    about: { ...section('About Northern Harrier', 'About us'), imageUrl: '', stats: [] },
     testimonials: section('Traveller stories'),
     blog: section('Travel stories and guides', 'All articles'),
     ctaBanner: {
@@ -46,7 +46,7 @@ const defaults = {
     },
   },
   about: {
-    hero: hero('About Norther Harier'),
+    hero: hero('About Northern Harrier'),
     story: { ...section('Our story'), paragraphs: [], imageUrl: '' },
     valuesHeading: section('Our values'),
     values: [],

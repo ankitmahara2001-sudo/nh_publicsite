@@ -7,7 +7,7 @@ export function Breadcrumb({ items, light = true, className }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn('text-[13px] lg:text-sm', light ? 'text-white/75' : 'text-muted', className)}
+      className={cn('text-[13px] lg:text-sm', light ? 'text-page/85' : 'text-muted', className)}
     >
       {items.map((item, index) => (
         <Fragment key={item.label}>
@@ -17,7 +17,9 @@ export function Breadcrumb({ items, light = true, className }) {
               {item.label}
             </Link>
           ) : (
-            <span aria-current="page">{item.label}</span>
+            <span aria-current="page" className={light ? 'text-gold-light' : 'text-ink'}>
+              {item.label}
+            </span>
           )}
         </Fragment>
       ))}

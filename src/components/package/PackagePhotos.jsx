@@ -25,7 +25,7 @@ export function PackagePhotos({ title, images }) {
       type="button"
       onClick={() => setOpenIndex(index)}
       aria-label={`Open photo: ${photo.caption}`}
-      className={cn('group relative overflow-hidden rounded-xl bg-placeholder', className)}
+      className={cn('group relative overflow-hidden rounded-2xl bg-placeholder', className)}
     >
       <Image
         src={photo.url}
@@ -43,7 +43,7 @@ export function PackagePhotos({ title, images }) {
         type="button"
         onClick={() => setOpenIndex(0)}
         className={cn(
-          'flex items-center justify-center rounded-xl bg-[#3B4656] font-bold text-white hover:bg-navy-2',
+          'flex items-center justify-center rounded-2xl bg-navy font-bold text-page transition hover:bg-navy-2',
           className,
         )}
       >
@@ -53,7 +53,7 @@ export function PackagePhotos({ title, images }) {
 
   return (
     <>
-      <div className="hidden auto-rows-[150px] grid-cols-[2fr_1fr_1fr] gap-3 lg:grid">
+      <div className="mt-2 hidden auto-rows-[150px] grid-cols-[2fr_1fr_1fr] gap-3 lg:grid">
         {photos
           .slice(0, GRID_PHOTOS)
           .map((photo, index) =>

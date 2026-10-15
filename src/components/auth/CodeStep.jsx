@@ -2,28 +2,92 @@
 
 import { OTP_LENGTH } from '@/domain/constants';
 import { otpVerifySchema } from '@/domain/schemas/auth';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/FormFields';
 import { FormMessage } from '@/components/ui/FormMessage';
+import { ArrowIcon } from '@/components/ui/SectionHeading';
+import { cn } from '@/lib/cn';
 import { clientApi } from '@/lib/api';
 import { validateForm } from '@/lib/formErrors';
 import { StepHeading } from './StepHeading';
 import { useCountdown } from './useCountdown';
 
+/** 28 -> "0:28" (design: "Resend in 0:28"). */
+const clock = (seconds) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+
+/**
+ * The 6 code boxes (design: Login OTP). One real input sits invisibly on top of the boxes, so typing,
+ * pasting and one-time-code autofill work as with a plain field; the boxes only display its value.
+ */
+function CodeBoxes({ inputRef, value, onChange, error }) {
+  const id = useId();
+  const errorId = `${id}-error`;
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor={id} className="text-sm font-semibold">
+        Enter the {OTP_LENGTH}-digit code
+      </label>
+      <div className="group relative">
+        <div aria-hidden="true" className="grid grid-cols-6 gap-2">
+          {Array.from({ length: OTP_LENGTH }, (_, index) => (
+            <span
+              key={index}
+              className={cn(
+                'flex h-14 min-w-0 items-center justify-center rounded-xl border-[1.5px] bg-surface font-display text-[20px] text-ink transition',
+                error
+                  ? 'border-danger bg-danger-bg'
+                  : index < value.length
+                    ? 'border-pine'
+                    : index === value.length
+                      ? 'border-input group-focus-within:border-2 group-focus-within:border-gold'
+                      : 'border-input',
+              )}
+            >
+              {value[index] ?? ''}
+            </span>
+          ))}
+        </div>
+        <input
+          ref={inputRef}
+          id={id}
+          name="code"
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          pattern="[0-9]*"
+          maxLength={OTP_LENGTH}
+          value={value}
+          onChange={onChange}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          aria-required
+          className="absolute inset-0 h-full w-full cursor-text text-base text-transparent caret-transparent opacity-0"
+        />
+      </div>
+      {error && (
+        <span id={errorId} className="text-[13px] font-semibold text-danger">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
+
 /** Resend button with a live countdown; screen readers hear only the start and the end. */
 function ResendButton({ secondsLeft, sending, onResend }) {
   const waiting = secondsLeft > 0;
   return (
-    <div className="flex flex-col items-center gap-1 text-sm">
-      <button
-        type="button"
-        onClick={onResend}
-        disabled={waiting || sending}
-        className="flex min-h-11 items-center px-2 font-bold text-navy underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:text-muted disabled:no-underline"
-      >
-        {sending ? 'Sending…' : waiting ? `Resend code in ${secondsLeft} s` : 'Resend code'}
-      </button>
+    <div className="flex flex-col gap-1 text-sm">
+      <span className="text-muted">
+        Didn&apos;t get it?{' '}
+        <button
+          type="button"
+          onClick={onResend}
+          disabled={waiting || sending}
+          className="inline-flex min-h-11 items-center font-bold text-gold-text underline underline-offset-4 disabled:cursor-not-allowed disabled:text-muted disabled:no-underline"
+        >
+          {sending ? 'Sending…' : waiting ? `Resend in ${clock(secondsLeft)}` : 'Resend code'}
+        </button>
+      </span>
       <span aria-live="polite" className="sr-only">
         {waiting ? 'You can request a new code after a short wait.' : 'You can now request a new code.'}
       </span>
@@ -85,43 +149,43 @@ export function CodeStep({ email, resendAfterSeconds, notice, onVerified, onChan
 
   return (
     <>
-      <StepHeading title="Check your email">
-        Enter the {OTP_LENGTH}-digit code sent to{' '}
-        <strong className="font-bold break-all text-ink">{email}</strong>.
+      <StepHeading title="Check your email" aside="ek code bheja hai —">
+        Sent to <strong className="font-bold break-all text-ink">{email}</strong> ·{' '}
+        <button
+          type="button"
+          onClick={onChangeEmail}
+          className="font-bold text-gold-text underline underline-offset-4 hover:text-[#7a3410]"
+        >
+          Use a different email
+        </button>
       </StepHeading>
       <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          ref={inputRef}
-          label="Login code"
-          name="code"
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          pattern="[0-9]*"
-          maxLength={OTP_LENGTH}
-          placeholder="••••••"
+        <CodeBoxes
+          inputRef={inputRef}
           value={code}
           onChange={(event) => {
             setCode(event.target.value.replace(/\D/g, '').slice(0, OTP_LENGTH));
             setFieldError(undefined);
           }}
           error={fieldError}
-          className="[&_input]:text-center [&_input]:text-xl [&_input]:font-bold [&_input]:tracking-[8px]"
         />
+        <ResendButton secondsLeft={countdown.secondsLeft} sending={resending} onResend={handleResend} />
         <FormMessage tone={message?.tone}>{message?.text}</FormMessage>
-        <Button type="submit" size="lg" block disabled={verifying}>
+        <Button
+          type="submit"
+          variant="accent"
+          size="lg"
+          block
+          disabled={verifying}
+          className="shadow-[0_12px_26px_-14px_rgba(140,70,10,.8)]"
+        >
           {verifying ? 'Verifying…' : 'Verify and continue'}
+          {!verifying && <ArrowIcon />}
         </Button>
       </form>
-      <div className="mt-4 flex flex-col items-center gap-1 border-t border-line pt-4">
-        <ResendButton secondsLeft={countdown.secondsLeft} sending={resending} onResend={handleResend} />
-        <button
-          type="button"
-          onClick={onChangeEmail}
-          className="flex min-h-11 items-center px-2 text-sm font-semibold text-muted underline-offset-4 hover:text-navy hover:underline"
-        >
-          Use a different email
-        </button>
-      </div>
+      <p aria-hidden="true" className="mt-4 text-center font-hand text-lg text-pine">
+        almost at base camp…
+      </p>
     </>
   );
 }

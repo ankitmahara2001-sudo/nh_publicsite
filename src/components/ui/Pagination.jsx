@@ -16,8 +16,8 @@ function pageItems(page, totalPages) {
   return items;
 }
 
-const SQUARE = 'flex size-11 items-center justify-center rounded-[var(--radius-control)] font-bold';
-const IDLE = 'border border-input hover:border-navy';
+const SQUARE = 'flex size-11 items-center justify-center rounded-full font-bold';
+const IDLE = 'border border-chip hover:border-navy';
 
 /** Prev / numbered / Next links (design/Blog.dc.html). `hrefFor(page)` builds each link. */
 export function Pagination({ page, totalPages, hrefFor, className }) {
@@ -36,7 +36,7 @@ export function Pagination({ page, totalPages, hrefFor, className }) {
             href={hrefFor(item)}
             aria-current={item === page ? 'page' : undefined}
             aria-label={`Page ${item}`}
-            className={cn(SQUARE, item === page ? 'bg-navy text-white' : IDLE)}
+            className={cn(SQUARE, item === page ? 'bg-navy text-page' : IDLE)}
           >
             {item}
           </Link>

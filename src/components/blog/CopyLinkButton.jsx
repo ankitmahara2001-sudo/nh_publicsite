@@ -25,7 +25,7 @@ export function CopyLinkButton({ url, className }) {
       type="button"
       onClick={copy}
       aria-live="polite"
-      className={cn(className, copied && 'border-navy bg-navy text-white')}
+      className={cn(className, copied && 'border-navy bg-navy text-page')}
     >
       {copied ? 'Link copied ✓' : 'Copy link'}
     </button>

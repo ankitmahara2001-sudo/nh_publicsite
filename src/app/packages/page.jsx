@@ -73,9 +73,10 @@ export default async function PackagesPage({ searchParams }) {
         imageUrl={hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Packages' }]}
         active="packages"
+        overline="tickets to the hills"
       />
 
-      <div className="mx-auto flex max-w-[1440px] gap-10 px-5 pt-4 pb-8 lg:items-start lg:px-20 lg:pt-14 lg:pb-20">
+      <div className="mx-auto flex max-w-[1280px] gap-8 px-5 pt-5 pb-12 lg:items-start lg:px-8 lg:pt-12 lg:pb-[100px]">
         <FilterSidebar {...filterProps} />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3.5 lg:gap-6">
@@ -97,7 +98,7 @@ export default async function PackagesPage({ searchParams }) {
           </p>
 
           {packages.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
+            <div className="grid gap-[18px] md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
               {packages.map((pkg, index) => (
                 <PackageCard key={pkg.id} pkg={pkg} priority={filters.page === 1 && index < EAGER_CARDS} />
               ))}

@@ -7,7 +7,7 @@ import { Panel } from './Panel';
  */
 export function CenteredPage({ className, children, width = 'max-w-[480px]' }) {
   return (
-    <main className="flex flex-1 items-start justify-center bg-page px-5 py-10 lg:items-center lg:py-20">
+    <main className="flex flex-1 items-start justify-center bg-page px-5 py-12 lg:items-center lg:py-24">
       <Panel className={cn('w-full', width, className)}>{children}</Panel>
     </main>
   );

@@ -20,10 +20,10 @@ export function FilterTabs({ label, items, className }) {
               scroll={false}
               aria-current={item.active ? 'page' : undefined}
               className={cn(
-                'inline-flex h-11 items-center rounded-full border px-4 text-[13px] font-bold transition lg:px-5 lg:text-sm',
+                'inline-flex h-11 items-center rounded-full border px-[18px] text-sm font-semibold transition lg:text-[15px]',
                 item.active
-                  ? 'border-navy bg-navy text-white'
-                  : 'border-input bg-surface text-ink hover:border-navy',
+                  ? 'border-navy bg-navy text-page'
+                  : 'border-chip bg-transparent text-ink hover:border-navy',
               )}
             >
               {item.label}

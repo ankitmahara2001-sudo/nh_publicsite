@@ -7,11 +7,12 @@ import { cn } from '@/lib/cn';
 // the error message and the aria wiring (htmlFor, aria-invalid, aria-describedby).
 // Other props (name, value, onChange, placeholder, disabled, autoComplete…) go to the control.
 
+// Design kit "Form fields": 1.5px sand border on paper, pine border + soft ring on focus, red tint on error.
 const CONTROL =
-  'w-full rounded-[var(--radius-control)] border bg-surface text-[15px] text-ink transition placeholder:text-[#8A8F99] focus:border-navy disabled:cursor-not-allowed disabled:bg-selected disabled:text-muted';
+  'w-full rounded-[var(--radius-control)] border-[1.5px] text-base font-medium text-ink transition placeholder:font-normal placeholder:text-[#8a8f87] focus:border-pine focus:shadow-[0_0_0_4px_rgba(43,82,67,.15)] focus:outline-none disabled:cursor-not-allowed disabled:bg-selected disabled:text-muted';
 
 function controlClasses(error, className) {
-  return cn(CONTROL, error ? 'border-danger' : 'border-input', className);
+  return cn(CONTROL, error ? 'border-danger bg-danger-bg' : 'border-input bg-surface', className);
 }
 
 /** Ids that link a control with its error text. */
@@ -32,7 +33,7 @@ function ariaProps({ error, errorId, optional }) {
 
 function FieldLabel({ htmlFor, label, optional }) {
   return (
-    <label htmlFor={htmlFor} className="text-sm font-bold">
+    <label htmlFor={htmlFor} className="text-sm font-semibold">
       {label}
       {optional && <span className="font-medium text-muted"> (optional)</span>}
     </label>
@@ -52,18 +53,31 @@ function Field({ className, children }) {
   return <div className={cn('flex flex-col gap-1.5 lg:gap-2', className)}>{children}</div>;
 }
 
-export function Input({ id, label, optional = false, error, className, type = 'text', ...props }) {
+/** `icon` (optional): a small decorative SVG shown inside the field on the left (design: login email). */
+export function Input({ id, label, optional = false, error, className, type = 'text', icon, ...props }) {
   const { controlId, errorId } = useFieldIds(id);
+  const input = (
+    <input
+      id={controlId}
+      type={type}
+      className={controlClasses(error, cn('h-[50px] px-3.5', icon && 'pl-11'))}
+      {...ariaProps({ error, errorId, optional })}
+      {...props}
+    />
+  );
   return (
     <Field className={className}>
       <FieldLabel htmlFor={controlId} label={label} optional={optional} />
-      <input
-        id={controlId}
-        type={type}
-        className={controlClasses(error, 'h-12 px-3.5')}
-        {...ariaProps({ error, errorId, optional })}
-        {...props}
-      />
+      {icon ? (
+        <span className="relative flex">
+          <span aria-hidden="true" className="pointer-events-none absolute top-[15px] left-3.5 text-moss">
+            {icon}
+          </span>
+          {input}
+        </span>
+      ) : (
+        input
+      )}
       <FieldError id={errorId} error={error} />
     </Field>
   );
@@ -77,7 +91,7 @@ export function Select({ id, label, optional = false, error, options, className,
       <FieldLabel htmlFor={controlId} label={label} optional={optional} />
       <select
         id={controlId}
-        className={controlClasses(error, 'h-12 px-3')}
+        className={controlClasses(error, 'h-[50px] px-3')}
         {...ariaProps({ error, errorId, optional })}
         {...props}
       >
@@ -118,12 +132,12 @@ export function Checkbox({ id, label, error, className, ...props }) {
         <input
           id={controlId}
           type="checkbox"
-          className="mt-0.5 size-5 shrink-0 cursor-pointer accent-navy"
+          className="mt-0.5 size-5 shrink-0 cursor-pointer accent-pine"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
           {...props}
         />
-        <label htmlFor={controlId} className="cursor-pointer text-sm leading-[22px] text-body">
+        <label htmlFor={controlId} className="cursor-pointer text-[15px] leading-[22px] text-ink">
           {label}
         </label>
       </div>

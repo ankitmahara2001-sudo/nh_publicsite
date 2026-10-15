@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/cn';
 
-// The mark's "NH" letters are navy, so dark backgrounds (navy footer/menu, header over a
-// hero photo) use a copy with white letters; the gold mountains are the same in both.
+// The mark's "NH" letters are navy, so dark backgrounds (header, footer, menu, login scene) use a
+// copy with white letters; the gold mountains are the same in both.
 const MARK_SRC = { dark: '/logo-mark.png', light: '/logo-mark-light.png' };
 const MARK_WIDTH = 233;
 const MARK_HEIGHT = 144;
@@ -18,7 +18,7 @@ export function LogoMark({ tone = 'dark', className }) {
       height={MARK_HEIGHT}
       unoptimized
       loading="eager"
-      className={cn('h-9 w-auto lg:h-11', className)}
+      className={cn('h-9 w-auto shrink-0 lg:h-11', className)}
     />
   );
 }
@@ -29,12 +29,14 @@ export function Logo({ name, tone = 'dark', className }) {
     <Link
       href="/"
       aria-label={`${name} home`}
-      className={cn('flex items-center gap-2 lg:gap-2.5', className)}
+      className={cn(
+        'flex items-center gap-2 lg:gap-2.5',
+        tone === 'light' ? 'text-page' : 'text-ink',
+        className,
+      )}
     >
       <LogoMark tone={tone} />
-      <span className="text-[17px] font-extrabold tracking-[-0.3px] lg:text-[19px] lg:tracking-[-0.4px]">
-        {name}
-      </span>
+      <span className="font-display text-[19px] leading-none lg:text-[20px]">{name}</span>
     </Link>
   );
 }

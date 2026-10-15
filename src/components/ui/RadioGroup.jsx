@@ -10,7 +10,7 @@ export function RadioGroup({ legend, options, value, onChange, name }) {
   const autoName = useId();
   return (
     <fieldset className="flex flex-col gap-2.5">
-      <legend className="pb-2.5 text-sm font-bold">{legend}</legend>
+      <legend className="pb-2.5 text-xs font-bold tracking-[.16em] text-pine uppercase">{legend}</legend>
       {options.map((option) => (
         <label key={option.value} className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[15px]">
           <input
@@ -19,7 +19,7 @@ export function RadioGroup({ legend, options, value, onChange, name }) {
             value={option.value}
             checked={value === option.value}
             onChange={() => onChange(option.value)}
-            className="size-[18px] shrink-0 accent-navy lg:size-[18px]"
+            className="size-[18px] shrink-0 accent-pine"
           />
           {option.label}
         </label>

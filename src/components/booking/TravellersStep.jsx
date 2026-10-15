@@ -22,12 +22,14 @@ function travellerTitle(index, seats) {
 export function TravellersStep({ details, setDetails, seats, email, errors }) {
   const setTraveller = (index, patch) =>
     setDetails({
-      travellers: details.travellers.map((traveller, i) => (i === index ? { ...traveller, ...patch } : traveller)),
+      travellers: details.travellers.map((traveller, i) =>
+        i === index ? { ...traveller, ...patch } : traveller,
+      ),
     });
 
   return (
     <div className="flex flex-col gap-4 lg:gap-[22px]">
-      <h2 className="text-xl font-extrabold lg:text-2xl">Traveller details</h2>
+      <h2 className="text-xl font-extrabold lg:text-[21px]">Traveller details</h2>
       {errors.travellers && <p className="text-sm font-semibold text-danger">{errors.travellers}</p>}
 
       {details.travellers.map((traveller, index) => (
@@ -36,7 +38,9 @@ export function TravellersStep({ details, setDetails, seats, email, errors }) {
           key={index}
           className="grid gap-3 rounded-xl border border-line p-3.5 lg:grid-cols-[2fr_1fr_1fr] lg:gap-3.5 lg:p-[18px]"
         >
-          <legend className="px-1.5 text-sm font-extrabold lg:text-[15px]">{travellerTitle(index, seats)}</legend>
+          <legend className="px-1.5 text-sm font-extrabold lg:text-[15px]">
+            {travellerTitle(index, seats)}
+          </legend>
           <Input
             label="Full name (as on ID)"
             value={traveller.fullName}

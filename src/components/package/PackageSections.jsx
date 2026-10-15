@@ -1,13 +1,49 @@
 import { formatDuration } from '@/domain/format';
-import { Stars } from '@/components/cards/ReviewCard';
+import { Avatar, Stars } from '@/components/cards/ReviewCard';
 import { Accordion } from '@/components/ui/Accordion';
 import { Photo } from '@/components/ui/Photo';
+import { Overline } from '@/components/ui/SectionHeading';
 
-// Content sections of the package page (design/PackageDetail.dc.html), in page order.
+// Content sections of the package page (design: Package detail board), in page order.
 
 function SectionTitle({ children, className = '' }) {
+  return <h2 className={`text-[24px] leading-[1.1] lg:text-[30px] ${className}`}>{children}</h2>;
+}
+
+function CheckIcon() {
   return (
-    <h2 className={`text-[22px] font-extrabold tracking-[-0.6px] lg:text-[28px] ${className}`}>{children}</h2>
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#2b5243"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="mt-0.5 shrink-0"
+    >
+      <path d="M5 12l5 5 9-10" />
+    </svg>
+  );
+}
+
+function CrossIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#9c2e3f"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      aria-hidden="true"
+      className="mt-0.5 shrink-0"
+    >
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
   );
 }
 
@@ -29,27 +65,25 @@ export function OverviewSection({ pkg, photoGrid }) {
   ].filter(([, value]) => value);
 
   return (
-    <section id="overview" className="flex scroll-mt-20 flex-col gap-3.5 lg:gap-5">
-      <SectionTitle>Overview</SectionTitle>
-      <dl className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:gap-3">
+    <section id="overview" className="flex scroll-mt-20 flex-col gap-4">
+      <Overline>the short of it</Overline>
+      <h2 className="sr-only">Overview</h2>
+      <p className="max-w-[680px] text-[17px] leading-[1.55] whitespace-pre-line text-ink lg:text-xl lg:leading-normal">
+        {pkg.overview}
+      </p>
+      <dl className="mt-2 grid grid-cols-2 gap-3 md:grid-cols-3">
         {facts.map(([label, value]) => (
-          <div
-            key={label}
-            className="rounded-xl border border-line bg-surface px-3.5 py-3 lg:px-[18px] lg:py-4"
-          >
-            <dt className="text-xs text-muted lg:text-[13px]">{label}</dt>
-            <dd className="mt-0.5 text-sm font-bold lg:mt-1 lg:text-base">{value}</dd>
+          <div key={label} className="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-4">
+            <dt className="text-xs font-bold tracking-[.14em] text-pine uppercase">{label}</dt>
+            <dd className="font-display text-lg leading-snug lg:text-xl">{value}</dd>
           </div>
         ))}
       </dl>
-      <p className="text-[15px] leading-6 whitespace-pre-line text-body lg:text-[17px] lg:leading-7">
-        {pkg.overview}
-      </p>
       {pkg.highlights.length > 0 && (
-        <ul className="grid grid-cols-2 gap-2.5 lg:grid-cols-4 lg:gap-3">
+        <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {pkg.highlights.map((h) => (
-            <li key={h.title} className="flex flex-col gap-1.5 rounded-xl bg-sand p-4 lg:p-[18px]">
-              <span className="text-[15px] font-bold">{h.title}</span>
+            <li key={h.title} className="flex flex-col gap-1.5 rounded-2xl bg-sand p-4 lg:p-[18px]">
+              <span className="font-display text-[17px] leading-tight">{h.title}</span>
               <span className="text-[13px] leading-[19px] text-muted">{h.text}</span>
             </li>
           ))}
@@ -63,27 +97,28 @@ export function OverviewSection({ pkg, photoGrid }) {
 export function ItinerarySection({ itinerary }) {
   if (!itinerary.length) return null;
   return (
-    <section id="itinerary" className="flex scroll-mt-20 flex-col gap-3 lg:gap-4">
-      <SectionTitle>Day-wise itinerary</SectionTitle>
+    <section id="itinerary" className="flex scroll-mt-20 flex-col gap-5">
+      <SectionTitle>The trail, day by day</SectionTitle>
       <Accordion
         variant="itinerary"
         items={itinerary.map((day) => ({
           key: day.dayNumber,
+          marker: String(day.dayNumber).padStart(2, '0'),
           header: (
-            <span className="flex items-center gap-3 lg:gap-4">
-              <span className="shrink-0 rounded-full bg-navy px-2.5 py-1 text-xs font-bold text-white lg:px-3 lg:text-[13px]">
+            <span className="flex flex-col gap-0.5">
+              <span className="text-xs font-bold tracking-[.16em] text-pine uppercase">
                 Day {day.dayNumber}
               </span>
-              <span className="text-[15px] font-bold lg:text-[17px]">{day.title}</span>
+              <span className="font-display text-xl leading-tight lg:text-[21px]">{day.title}</span>
             </span>
           ),
           content: (
-            <div className="flex flex-col gap-2.5 px-3.5 pb-3.5 lg:pr-5 lg:pb-5 lg:pl-[100px]">
-              <p className="text-sm leading-[22px] whitespace-pre-line text-body lg:text-[15px] lg:leading-6">
+            <div className="flex flex-col gap-2.5 pt-1.5 pr-2 pl-[68px] lg:pl-[72px]">
+              <p className="text-[15px] leading-6 whitespace-pre-line text-muted lg:text-base">
                 {day.description}
               </p>
               {(day.meals || day.stay) && (
-                <p className="flex flex-wrap gap-x-5 gap-y-1 text-[13px] font-semibold text-navy lg:text-sm">
+                <p className="flex flex-wrap gap-x-5 gap-y-1 text-[13px] font-semibold text-pine lg:text-sm">
                   {day.meals && <span>Meals: {day.meals}</span>}
                   {day.stay && <span>Stay: {day.stay}</span>}
                 </p>
@@ -98,15 +133,13 @@ export function ItinerarySection({ itinerary }) {
 
 export function InclusionsSection({ included, excluded }) {
   if (!included.length && !excluded.length) return null;
-  const list = (title, items, mark, markClass) => (
-    <div className="flex flex-col gap-2.5 rounded-xl border border-line bg-surface p-4 lg:gap-3 lg:p-6">
-      <h3 className="text-[15px] font-bold lg:text-[17px]">{title}</h3>
-      <ul className="flex flex-col gap-2.5 lg:gap-3">
+  const list = (title, items, icon, boxClass) => (
+    <div className={`flex flex-col gap-3 rounded-[20px] p-[22px] lg:p-6 ${boxClass}`}>
+      <h3 className="text-[20px] leading-tight">{title}</h3>
+      <ul className="flex flex-col gap-2.5">
         {items.map((text) => (
-          <li key={text} className="flex gap-2.5 text-sm lg:text-[15px]">
-            <span aria-hidden="true" className={`font-extrabold ${markClass}`}>
-              {mark}
-            </span>
+          <li key={text} className="flex gap-2.5 text-[15px] lg:text-base">
+            {icon}
             {text}
           </li>
         ))}
@@ -114,11 +147,11 @@ export function InclusionsSection({ included, excluded }) {
     </div>
   );
   return (
-    <section id="inclusions" className="flex scroll-mt-20 flex-col gap-3 lg:gap-4">
-      <SectionTitle>What&apos;s included</SectionTitle>
-      <div className="grid gap-3 md:grid-cols-2 lg:gap-4">
-        {included.length > 0 && list('Included', included, '✓', 'text-success')}
-        {excluded.length > 0 && list('Not included', excluded, '×', 'text-danger')}
+    <section id="inclusions" className="flex scroll-mt-20 flex-col gap-4">
+      <h2 className="sr-only">What&apos;s included</h2>
+      <div className="grid gap-4 md:grid-cols-2">
+        {included.length > 0 && list("What's included", included, <CheckIcon />, 'bg-success-bg')}
+        {excluded.length > 0 && list('Not included', excluded, <CrossIcon />, 'bg-blush')}
       </div>
     </section>
   );
@@ -127,17 +160,17 @@ export function InclusionsSection({ included, excluded }) {
 export function HotelsSection({ hotels }) {
   if (!hotels.length) return null;
   return (
-    <section id="hotels" className="flex scroll-mt-20 flex-col gap-3 lg:gap-4">
+    <section id="hotels" className="flex scroll-mt-20 flex-col gap-4 lg:gap-5">
       <SectionTitle>Where you&apos;ll stay</SectionTitle>
-      <div className="grid gap-3 md:grid-cols-2 lg:gap-4">
+      <div className="grid gap-4 md:grid-cols-2">
         {hotels.map((hotel) => (
-          <article key={hotel.id} className="overflow-hidden rounded-xl border border-line bg-surface">
+          <article key={hotel.id} className="overflow-hidden rounded-[20px] border border-line bg-surface">
             <div className="relative h-[150px]">
               <Photo src={hotel.imageUrl} alt={hotel.name} sizes="(min-width: 1024px) 410px, 100vw" />
             </div>
             <div className="flex flex-col gap-1.5 p-4 lg:p-[18px]">
               <div className="flex justify-between gap-3">
-                <h3 className="text-base font-bold">{hotel.name}</h3>
+                <h3 className="text-xl leading-tight">{hotel.name}</h3>
                 {hotel.rating != null && (
                   <span className="shrink-0 text-sm font-bold">
                     <span aria-hidden="true">★</span> {hotel.rating.toFixed(1)}
@@ -161,30 +194,37 @@ export function HotelsSection({ hotels }) {
 export function ReviewsSection({ reviews, rating, reviewCount }) {
   if (!reviews.length) return null;
   return (
-    <section id="reviews" className="flex scroll-mt-20 flex-col gap-3 lg:gap-4">
-      <SectionTitle>Reviews</SectionTitle>
-      <div className="flex flex-col gap-3 md:flex-row lg:gap-4">
-        <div className="flex shrink-0 flex-col gap-1.5 rounded-xl bg-navy p-6 text-white md:w-[220px]">
-          <span className="text-[44px] leading-none font-extrabold">{rating?.toFixed(1)}</span>
-          <Stars rating={Math.round(rating ?? 5)} className="text-gold-light" />
-          <span className="text-sm text-footer-text">
-            Based on {reviewCount} review{reviewCount === 1 ? '' : 's'}
+    <section
+      id="reviews"
+      className="flex scroll-mt-20 flex-col gap-5 rounded-3xl bg-sand p-[22px] lg:gap-6 lg:p-[30px]"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2.5">
+        <SectionTitle className="lg:text-[24px]">Traveller stories</SectionTitle>
+        <span className="flex items-center gap-2.5">
+          <Stars rating={Math.round(rating ?? 5)} size={18} />
+          <span className="font-bold">
+            {rating?.toFixed(1)}{' '}
+            <span className="font-medium text-muted">
+              · {reviewCount} review{reviewCount === 1 ? '' : 's'}
+            </span>
           </span>
-        </div>
-        <div className="flex flex-1 flex-col gap-3">
-          {reviews.map((review) => (
-            <figure
-              key={review.id}
-              className="flex flex-col gap-2 rounded-xl border border-line bg-surface px-5 py-[18px]"
-            >
-              <figcaption className="flex justify-between gap-3">
+        </span>
+      </div>
+      <div className="flex flex-col gap-6">
+        {reviews.map((review) => (
+          <figure key={review.id} className="flex flex-col gap-3">
+            <blockquote className="font-display text-[19px] leading-[1.35] lg:text-[20px]">
+              “{review.text}”
+            </blockquote>
+            <figcaption className="flex items-center gap-3">
+              <Avatar name={review.name} />
+              <span className="flex flex-col leading-[1.3]">
                 <span className="font-bold">{review.name}</span>
-                <span className="text-[13px] text-muted">{review.tripLabel}</span>
-              </figcaption>
-              <blockquote className="text-[15px] leading-6 text-body">{review.text}</blockquote>
-            </figure>
-          ))}
-        </div>
+                {review.tripLabel && <span className="text-[13px] text-muted">{review.tripLabel}</span>}
+              </span>
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </section>
   );
@@ -193,14 +233,14 @@ export function ReviewsSection({ reviews, rating, reviewCount }) {
 export function FaqSection({ faqs }) {
   if (!faqs.length) return null;
   return (
-    <section id="faq" className="flex scroll-mt-20 flex-col gap-2.5 lg:gap-3">
-      <SectionTitle className="mb-1">Frequently asked questions</SectionTitle>
+    <section id="faq" className="flex scroll-mt-20 flex-col gap-2.5">
+      <SectionTitle className="mb-1.5">Good to know</SectionTitle>
       <Accordion
         items={faqs.map((faq, index) => ({
           key: index,
-          header: <span className="text-[15px] font-bold lg:text-base">{faq.question}</span>,
+          header: faq.question,
           content: (
-            <p className="px-3.5 pb-3.5 text-sm leading-[22px] text-body lg:px-5 lg:pb-[18px] lg:text-[15px] lg:leading-6">
+            <p className="px-[18px] pb-4 text-[15px] leading-6 text-muted lg:px-[22px] lg:pb-[18px] lg:text-base">
               {faq.answer}
             </p>
           ),

@@ -6,7 +6,16 @@ import { Photo } from '@/components/ui/Photo';
 import { CouponField } from './CouponField';
 import { PriceBreakdown } from './PriceBreakdown';
 
-function SummaryBody({ pkg, price, quote, quoteState, couponCode, onCoupon, cancellationNote, couponLocked }) {
+function SummaryBody({
+  pkg,
+  price,
+  quote,
+  quoteState,
+  couponCode,
+  onCoupon,
+  cancellationNote,
+  couponLocked,
+}) {
   const travellers = quote ? quote.seats + quote.infants : null;
   return (
     <div className="flex flex-col gap-3 text-sm lg:text-[15px]">
@@ -26,16 +35,14 @@ function SummaryBody({ pkg, price, quote, quoteState, couponCode, onCoupon, canc
           <PriceBreakdown quote={quote} className={quoteState.loading ? 'opacity-60' : ''} />
         ) : (
           <p className={quoteState.error ? 'font-semibold text-danger' : 'text-muted'}>
-            {quoteState.loading ? 'Calculating your price…' : quoteState.error || 'Choose your trip details to see the total.'}
+            {quoteState.loading
+              ? 'Calculating your price…'
+              : quoteState.error || 'Choose your trip details to see the total.'}
           </p>
         )}
       </div>
       {!couponLocked && (
-        <CouponField
-          initialCode={couponCode}
-          onApply={onCoupon}
-          result={couponCode ? quote?.coupon : null}
-        />
+        <CouponField initialCode={couponCode} onApply={onCoupon} result={couponCode ? quote?.coupon : null} />
       )}
       {cancellationNote && <span className="text-[13px] text-muted">{cancellationNote}</span>}
     </div>

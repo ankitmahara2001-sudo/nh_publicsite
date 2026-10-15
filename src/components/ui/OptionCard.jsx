@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn';
 /**
  * Selectable card used as a radio button (package type, departure date).
  * Put several inside an element with role="radiogroup" and an aria-label.
- * Design: selected = 2px navy border on #F2F4F7, unselected = 1px border-line on white.
+ * Design: selected = 1.5px pine border on mint (#E4ECE6), unselected = 1.5px sand border on paper.
  */
 export function OptionCard({ selected, onSelect, disabled = false, title, note, aside, className }) {
   return (
@@ -16,8 +16,8 @@ export function OptionCard({ selected, onSelect, disabled = false, title, note, 
       disabled={disabled}
       onClick={onSelect}
       className={cn(
-        'flex min-h-[60px] w-full items-center justify-between gap-3 rounded-xl px-3.5 py-3 text-left text-ink transition lg:min-h-16',
-        selected ? 'border-2 border-navy bg-selected' : 'border border-line bg-surface hover:border-input',
+        'flex min-h-[60px] w-full items-center justify-between gap-3 rounded-[var(--radius-control)] border-[1.5px] px-3.5 py-3 text-left text-ink transition lg:min-h-16',
+        selected ? 'border-pine bg-success-bg' : 'border-input bg-page hover:border-chip',
         disabled && 'cursor-not-allowed opacity-50',
         className,
       )}
@@ -27,7 +27,7 @@ export function OptionCard({ selected, onSelect, disabled = false, title, note, 
           aria-hidden="true"
           className={cn(
             'size-[18px] shrink-0 rounded-full',
-            selected ? 'border-[5px] border-navy' : 'border-2 border-[#B9BEC7]',
+            selected ? 'border-[5px] border-pine' : 'border-2 border-chip',
           )}
         />
         <span className="flex flex-col">

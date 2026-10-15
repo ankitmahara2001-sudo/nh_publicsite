@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
 const ROUND_BUTTON =
-  'flex size-11 shrink-0 items-center justify-center rounded-full border border-footer-ring text-xl text-white transition hover:bg-white/10';
+  'flex size-12 shrink-0 items-center justify-center rounded-full border border-page/40 text-[21px] text-page transition hover:bg-page/10';
 
 /**
- * Full-screen photo preview (design/Gallery "Photo preview"). A native modal <dialog>: it traps
+ * Full-screen photo preview, shown as a large polaroid (design: Gallery lightbox). A native modal <dialog>: it traps
  * focus, closes on Escape and hides the page from screen readers. Arrow keys move between photos.
  * The page behind is scroll-locked while it is open; focus returns to the opening tile (`onClose`).
  */
@@ -49,17 +49,16 @@ export function Lightbox({ photos, index, onIndexChange, onClose }) {
       onClose={onClose}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
-      className="m-auto h-[min(720px,calc(100dvh-32px))] w-[calc(100vw-32px)] max-w-[1280px] max-h-none rounded-[var(--radius-panel)] bg-navy p-0 text-white backdrop:bg-black/75 lg:w-[calc(100vw-160px)]"
+      className="m-auto h-[min(820px,calc(100dvh-32px))] w-[calc(100vw-32px)] max-w-[940px] max-h-none overflow-visible bg-transparent p-0 text-page backdrop:bg-[rgba(12,22,18,.92)]"
     >
-      <div className="flex h-full flex-col gap-4 p-4 lg:p-5">
+      <div className="flex h-full flex-col gap-4 lg:gap-[18px]">
         <div className="flex items-center justify-between gap-4">
-          <p className="text-[15px] font-bold lg:text-base">
-            {photo.caption}
-            {photo.place && <span className="font-normal text-footer-muted"> · {photo.place}</span>}
+          <p className="text-xs font-bold tracking-[.16em] text-gold-light uppercase lg:text-[13px]">
+            {photo.place || photo.caption}
           </p>
           <div className="flex items-center gap-3">
             {hasMany && (
-              <span className="text-sm text-footer-muted" aria-live="polite">
+              <span className="text-sm text-footer-text" aria-live="polite">
                 {index + 1} / {photos.length}
               </span>
             )}
@@ -75,22 +74,29 @@ export function Lightbox({ photos, index, onIndexChange, onClose }) {
           </div>
         </div>
 
-        <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl">
-          <Image
-            key={photo.id}
-            src={photo.url}
-            alt={photo.caption ?? ''}
-            fill
-            sizes="100vw"
-            className="object-contain"
-          />
+        <div className="relative flex min-h-0 flex-1 -rotate-1 flex-col bg-white p-3 pb-4 shadow-[0_30px_60px_-30px_rgba(0,0,0,.7)] lg:p-[18px] lg:pb-[26px]">
+          <div className="relative min-h-0 flex-1 overflow-hidden bg-navy-2">
+            <Image
+              key={photo.id}
+              src={photo.url}
+              alt={photo.caption ?? ''}
+              fill
+              sizes="(min-width: 1024px) 900px, 100vw"
+              className="object-contain"
+            />
+          </div>
+          {photo.caption && (
+            <p className="mt-3 font-hand text-xl leading-snug text-ink lg:mt-4 lg:text-[22px]">
+              {photo.caption}
+            </p>
+          )}
           {hasMany && (
             <>
               <button
                 type="button"
                 onClick={() => show(index - 1)}
                 aria-label="Previous photo"
-                className={`${ROUND_BUTTON} absolute top-1/2 left-2 -translate-y-1/2 bg-navy/70`}
+                className={`${ROUND_BUTTON} absolute top-1/2 left-5 -translate-y-1/2 bg-navy/70 lg:left-7`}
               >
                 <span aria-hidden="true">‹</span>
               </button>
@@ -98,7 +104,7 @@ export function Lightbox({ photos, index, onIndexChange, onClose }) {
                 type="button"
                 onClick={() => show(index + 1)}
                 aria-label="Next photo"
-                className={`${ROUND_BUTTON} absolute top-1/2 right-2 -translate-y-1/2 bg-navy/70`}
+                className={`${ROUND_BUTTON} absolute top-1/2 right-5 -translate-y-1/2 bg-navy/70 lg:right-7`}
               >
                 <span aria-hidden="true">›</span>
               </button>

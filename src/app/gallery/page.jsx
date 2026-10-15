@@ -1,6 +1,7 @@
 import { GALLERY_CATEGORIES, GALLERY_CATEGORY_LABELS } from '@/domain/enums';
 import Link from 'next/link';
 import { GalleryGrid } from '@/components/gallery/GalleryGrid';
+import { SocialIcon } from '@/components/layout/Footer';
 import { Container } from '@/components/ui/Container';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { FilterTabs } from '@/components/ui/FilterTabs';
@@ -24,9 +25,19 @@ export async function generateMetadata() {
   });
 }
 
+/** "@handle" from a profile URL such as https://instagram.com/handle (falls back to "Instagram"). */
+function socialHandle(url) {
+  try {
+    const handle = new URL(url).pathname.split('/').filter(Boolean)[0];
+    return handle ? `@${handle.replace(/^@/, '')}` : 'Instagram';
+  } catch {
+    return 'Instagram';
+  }
+}
+
 export default async function GalleryPage({ searchParams }) {
   const category = oneOf((await searchParams).category, GALLERY_CATEGORIES);
-  const [{ data: photos }, { pages }] = await Promise.all([
+  const [{ data: photos }, { pages, social }] = await Promise.all([
     getApi('/gallery', { params: { category } }),
     getSiteSettings(),
   ]);
@@ -45,17 +56,31 @@ export default async function GalleryPage({ searchParams }) {
   return (
     <main>
       <PageHero
+        variant="plain"
+        overline="postcards from devbhoomi"
         title={hero.title}
         subtitle={hero.subtitle}
         imageUrl={hero.imageUrl}
-        breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}
         active="gallery"
+        aside={
+          social?.instagram && (
+            <a
+              href={social.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-12 items-center gap-2.5 rounded-full border-[1.5px] border-navy px-5 font-bold text-ink transition hover:bg-navy hover:text-page"
+            >
+              <SocialIcon name="instagram" />
+              {socialHandle(social.instagram)}
+            </a>
+          )
+        }
       />
 
       <Container
         as="section"
         aria-label="Photos"
-        className="flex flex-col gap-4 pt-4 pb-10 lg:gap-7 lg:pt-14 lg:pb-20"
+        className="flex flex-col gap-8 pt-2 pb-14 lg:gap-10 lg:pb-[120px]"
       >
         <FilterTabs label="Photo category" items={tabs} />
         {photos.length > 0 ? (

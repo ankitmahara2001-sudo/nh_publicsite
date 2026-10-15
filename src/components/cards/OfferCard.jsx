@@ -1,58 +1,110 @@
-import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { CopyCodeButton } from './CopyCodeButton';
 import { discountLabel, kindLabel, offerRules, validityLabel } from './offerText';
 
-function CodeChip({ code, large }) {
+// Coupon colours (design: "Offers on the trail"): Snow coupons with a sand stub, alternating with
+// Marigold coupons with a lighter marigold stub.
+const TONES = {
+  snow: {
+    card: 'bg-page text-ink',
+    eyebrow: 'text-pine',
+    text: 'text-muted',
+    label: 'text-muted',
+    stub: 'border-[#c9bfa8] bg-stub',
+  },
+  marigold: {
+    card: 'bg-gold text-ink',
+    eyebrow: 'font-extrabold text-ink',
+    text: 'text-[#2a1c0c]',
+    label: 'font-extrabold text-ink',
+    stub: 'border-navy/45 bg-gold-2',
+  },
+};
+
+/** Alternates the coupon colour along a list of offers. */
+export const offerTone = (index) => (index % 2 === 1 ? 'marigold' : 'snow');
+
+/**
+ * Two-part coupon: offer on the left, dashed tear line, code stub with "Copy code" on the right.
+ * Stacks into a compact row on phones (design: Mobile-Home offers).
+ */
+function Coupon({ offer, tone = 'snow', title, eyebrow, lines, outlined = false }) {
+  const t = TONES[tone];
   return (
-    <span
+    <article
       className={cn(
-        'rounded-lg border border-dashed border-gold bg-sand-light font-extrabold text-gold-text',
-        large
-          ? 'px-3.5 py-2 text-[15px] tracking-[1px]'
-          : 'px-2.5 py-1.5 text-[13px] tracking-[0.8px] lg:px-3.5 lg:py-[7px] lg:text-sm lg:tracking-[1px]',
+        'flex overflow-hidden rounded-[18px] lg:rounded-[20px]',
+        t.card,
+        outlined && tone === 'snow' && 'border border-line',
       )}
     >
-      {code}
-    </span>
-  );
-}
-
-/** Compact offer card on the sand band of the home page (design/Main "Offers for you"). */
-export function OfferTeaserCard({ offer }) {
-  const terms = [offerRules(offer)[0], validityLabel(offer)].join(' · ');
-  return (
-    <div className="flex w-[270px] shrink-0 flex-col gap-2 rounded-[var(--radius-card)] bg-surface p-4 lg:w-auto lg:gap-2.5 lg:p-[22px]">
-      <span className="text-[22px] font-extrabold text-navy lg:text-[28px]">{discountLabel(offer)}</span>
-      <span className="text-sm font-bold lg:text-base">{offer.description}</span>
-      <span className="text-xs text-muted lg:text-[13px]">{terms}</span>
-      <div className="mt-auto flex items-center justify-between border-t border-dashed border-dash pt-2.5 lg:pt-3">
-        <CodeChip code={offer.code} />
-        <CopyCodeButton code={offer.code} />
+      <div className="flex min-w-0 flex-1 flex-col gap-1 p-[18px] lg:gap-2 lg:p-7">
+        <span
+          className={cn(
+            'text-[11px] font-bold tracking-[.16em] uppercase lg:text-xs lg:tracking-[.18em]',
+            t.eyebrow,
+          )}
+        >
+          {eyebrow}
+        </span>
+        <span className="font-display text-[24px] leading-[1.1] lg:text-[34px] lg:leading-none">
+          {discountLabel(offer)}
+        </span>
+        {title}
+        <div className={cn('flex flex-col gap-0.5 text-[13px] lg:mt-auto lg:pt-2', t.text)}>{lines}</div>
       </div>
-    </div>
-  );
-}
-
-/** Full offer card on the Offers page (design/Offers.dc.html). */
-export function OfferCard({ offer }) {
-  return (
-    <article className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-line bg-surface p-6">
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-[30px] font-extrabold text-navy">{discountLabel(offer)}</span>
-        <Pill tone="sand">{kindLabel(offer)}</Pill>
-      </div>
-      <h2 className="text-[17px] leading-6 font-bold">{offer.description}</h2>
-      <ul className="flex list-disc flex-col gap-1 pl-[18px] text-sm text-muted">
-        {offerRules(offer).map((rule) => (
-          <li key={rule}>{rule}</li>
-        ))}
-        <li>{validityLabel(offer)}</li>
-      </ul>
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-dashed border-dash pt-3.5">
-        <CodeChip code={offer.code} large />
+      <div
+        className={cn(
+          'flex w-[118px] shrink-0 flex-col items-center justify-center gap-1.5 border-l-2 border-dashed px-3 py-4 text-center sm:w-[180px] lg:w-[200px] lg:items-start lg:gap-2.5 lg:px-[22px] lg:py-7 lg:text-left',
+          t.stub,
+        )}
+      >
+        <span className={cn('hidden text-xs font-bold tracking-[.14em] uppercase lg:block', t.label)}>
+          Use code
+        </span>
+        <span className="font-display text-lg tracking-[.06em] break-all lg:text-[24px]">{offer.code}</span>
         <CopyCodeButton code={offer.code} variant="pill" />
       </div>
     </article>
+  );
+}
+
+/** Compact offer coupon on the dark band of the home page (design/Main "Offers on the trail"). */
+export function OfferTeaserCard({ offer, tone = 'snow' }) {
+  const t = TONES[tone];
+  return (
+    <Coupon
+      offer={offer}
+      tone={tone}
+      eyebrow={kindLabel(offer) === 'Flat' ? 'Flat discount' : 'Coupon'}
+      title={<span className={cn('text-[15px] lg:text-base', t.text)}>{offer.description}</span>}
+      lines={
+        <>
+          <span>{offerRules(offer)[0]}</span>
+          <span>{validityLabel(offer)}</span>
+        </>
+      }
+    />
+  );
+}
+
+/** Full offer coupon on the Offers page (design/Offers via the home coupons). */
+export function OfferCard({ offer, tone = 'snow' }) {
+  return (
+    <Coupon
+      offer={offer}
+      tone={tone}
+      outlined
+      eyebrow={kindLabel(offer)}
+      title={<h2 className="font-sans text-base leading-6 font-bold lg:text-[17px]">{offer.description}</h2>}
+      lines={
+        <ul className="flex list-disc flex-col gap-0.5 pl-[18px] text-[13px] lg:text-sm">
+          {offerRules(offer).map((rule) => (
+            <li key={rule}>{rule}</li>
+          ))}
+          <li>{validityLabel(offer)}</li>
+        </ul>
+      }
+    />
   );
 }
