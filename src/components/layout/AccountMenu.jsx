@@ -78,7 +78,7 @@ export function AccountMenu({ light, compact = false }) {
           role="menu"
           className="absolute right-0 z-30 mt-2 w-60 overflow-hidden rounded-[18px] border border-line bg-surface py-1.5 text-ink shadow-[0_30px_60px_-30px_rgba(18,38,31,.6)]"
         >
-          <p className="truncate px-4 pt-2 pb-1 font-hand text-lg text-gold-text">
+          <p className="truncate px-4 pt-2 pb-1 text-sm font-semibold text-muted">
             {customer.name || customer.email}
           </p>
           {ACCOUNT_LINKS.map((link) => (

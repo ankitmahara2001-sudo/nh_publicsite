@@ -124,7 +124,7 @@ export function MobileMenu({ company, active, onClose }) {
             Enquire now
           </Link>
         </div>
-        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 font-hand text-lg text-gold-light">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-sm text-footer-text">
           {company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
           {company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
         </div>

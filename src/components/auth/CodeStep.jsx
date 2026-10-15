@@ -183,9 +183,6 @@ export function CodeStep({ email, resendAfterSeconds, notice, onVerified, onChan
           {!verifying && <ArrowIcon />}
         </Button>
       </form>
-      <p aria-hidden="true" className="mt-4 text-center font-hand text-lg text-pine">
-        almost at base camp…
-      </p>
     </>
   );
 }

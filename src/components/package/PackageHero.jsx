@@ -13,14 +13,14 @@ export function PackageHero({ pkg }) {
 
   return (
     <>
-      <Header variant="solid" active="packages" />
-      <section className="relative isolate flex min-h-[340px] flex-col justify-end overflow-hidden bg-navy-2 text-page lg:min-h-[460px]">
-        <Photo src={pkg.coverImageUrl} alt="" priority sizes="100vw" className="-z-10" />
+      <section className="relative isolate flex min-h-svh flex-col overflow-hidden bg-navy-2 text-page">
+        <Photo src={pkg.coverImageUrl} alt="" priority sizes="100vw" fallback="dawn" className="-z-10" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy/5 via-navy/20 to-navy/80"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy/55 via-navy/15 to-navy/80"
         />
-        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-3 px-5 pt-16 pb-7 lg:px-8 lg:pt-10 lg:pb-9">
+        <Header variant="transparent" active="packages" />
+        <div className="mx-auto mt-auto flex w-full max-w-[1280px] flex-col gap-3 px-5 pt-16 pb-16 lg:px-8 lg:pt-10 lg:pb-24">
           <Link href="/packages" className="text-sm text-page/85 hover:underline lg:hidden">
             ← Packages
           </Link>
@@ -56,6 +56,18 @@ export function PackageHero({ pkg }) {
             </p>
           )}
         </div>
+        {/* Ridge silhouette into the page, as on the home hero. */}
+        <svg
+          viewBox="0 0 1440 60"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 block h-10 w-full lg:h-16"
+        >
+          <path
+            d="M0 60 L0 40 L80 22 L150 34 L240 8 L320 30 L420 14 L520 36 L610 18 L720 32 L820 6 L910 28 L1010 16 L1110 34 L1200 12 L1300 30 L1380 20 L1440 28 L1440 60 Z"
+            fill="#f5f1e8"
+          />
+        </svg>
       </section>
     </>
   );

@@ -7,7 +7,7 @@
  */
 @theme {
   --font-sans: var(--font-figtree), 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-young-serif), Georgia, ui-serif, serif;
+  --font-display: var(--font-jakarta), var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-hand: var(--font-kalam), 'Comic Sans MS', cursive;
 
   /* Palette · drawn from the hills */
@@ -63,14 +63,19 @@
     line-height: 1.55;
   }
 
-  /* Headlines, prices and numbers use Young Serif (one weight only, so never synthesise bold). */
+  /* Headlines, prices and numbers use Plus Jakarta Sans. */
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-synthesis: none;
-    letter-spacing: normal;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* Display text outside h1–h3 (prices, numbers, names); a font-weight utility can still override it. */
+  .font-display {
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   a {
@@ -81,11 +86,6 @@
 :focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 3px;
-}
-
-/* Young Serif display text (used outside h1–h3: prices, numbers, big quotes). */
-.font-display {
-  font-synthesis: none;
 }
 
 /* Hide scrollbars on horizontal card carousels (mobile design) while keeping them scrollable. */
@@ -115,6 +115,34 @@
 .polaroid:hover,
 .polaroid:focus-visible {
   transform: rotate(0deg) scale(1.02);
+}
+
+/* Offer coupons: a one-second tilt wobble on hover, and a scalloped tear edge on the code stub. */
+.coupon {
+  transition: box-shadow 0.3s ease;
+}
+.coupon:hover {
+  animation: coupon-tilt 1s ease-in-out;
+  box-shadow: 0 26px 50px -24px rgba(18, 38, 31, 0.55);
+}
+@keyframes coupon-tilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-2.5deg) scale(1.02);
+  }
+  45% {
+    transform: rotate(2deg) scale(1.02);
+  }
+  70% {
+    transform: rotate(-1deg) scale(1.01);
+  }
+}
+.coupon-stub {
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, #0000 97%, #000) 0 0 / 100% 20px;
+  mask: radial-gradient(circle 7px at 0 50%, #0000 97%, #000) 0 0 / 100% 20px;
 }
 
 /* Contour-line pattern for dark sections (UI-Kit "contour pattern"). */
@@ -182,9 +210,9 @@
   border-radius: 20px;
   border: 1px solid var(--color-line);
   background: var(--color-surface);
-  font-family: var(--font-display);
   font-size: 17px;
-  line-height: 1.45;
+  font-weight: 500;
+  line-height: 1.55;
   color: var(--color-ink);
 }
 .prose-article img {

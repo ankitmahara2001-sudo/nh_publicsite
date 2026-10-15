@@ -152,7 +152,7 @@ export function LoginScenery({ companyName }) {
         <Logo name={companyName} tone="light" />
       </div>
       <div className="relative hidden max-w-[460px] flex-col gap-[18px] lg:flex">
-        <span className="font-hand text-[22px] text-gold-light">phir milenge pahadon mein</span>
+        <span className="font-hand text-[20px] text-gold-light">phir milenge pahadon mein</span>
         <p className="font-display text-[clamp(28px,2.8vw,38px)] leading-[1.05]">
           Your trips, saved like a boarding pass.
         </p>

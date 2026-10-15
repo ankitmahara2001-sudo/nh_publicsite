@@ -31,7 +31,7 @@ export function ReviewCard({ review }) {
   return (
     <figure className="flex w-[300px] shrink-0 flex-col gap-4 rounded-3xl bg-sand p-[22px] lg:w-full lg:gap-5 lg:rounded-[28px] lg:p-8">
       <Stars rating={review.rating} />
-      <blockquote className="font-display text-[19px] leading-[1.35] lg:text-[20px]">
+      <blockquote className="text-[17px] leading-[1.6] font-medium text-ink lg:text-lg">
         “{review.text}”
       </blockquote>
       <figcaption className="mt-auto flex items-center gap-3 lg:gap-3.5">

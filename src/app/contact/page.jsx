@@ -76,12 +76,14 @@ export default async function ContactPage() {
   return (
     <main>
       <PageHero
+        theme="night"
         title={contact.hero.title}
         subtitle={contact.hero.subtitle}
         imageUrl={contact.hero.imageUrl}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
         active="contact"
         overline="baat karein"
+        handwritten
       />
 
       {contact.channels.length > 0 && (

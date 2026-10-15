@@ -76,6 +76,7 @@ export default async function DestinationsPage({ searchParams }) {
   return (
     <main>
       <PageHero
+        theme="mist"
         title={hero.title}
         subtitle={hero.subtitle}
         imageUrl={hero.imageUrl}

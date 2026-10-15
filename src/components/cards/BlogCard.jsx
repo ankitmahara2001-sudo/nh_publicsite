@@ -41,9 +41,6 @@ export function BlogCard({ post, showExcerpt = false, imageHeight = 'lg:h-[220px
       </div>
       <div className="flex flex-col justify-center gap-1 px-[18px] py-4 lg:gap-2.5 lg:px-[26px] lg:pt-6 lg:pb-7">
         <span className="text-[11px] font-bold tracking-[.14em] text-pine uppercase lg:hidden">{meta}</span>
-        <span aria-hidden="true" className="hidden font-hand text-xl text-gold-text lg:block">
-          field notes —
-        </span>
         <h3 className="text-[19px] leading-[1.15] group-hover:text-gold-text lg:text-[22px] lg:leading-[1.1]">
           {post.title}
         </h3>

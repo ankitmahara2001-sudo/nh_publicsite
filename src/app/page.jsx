@@ -10,7 +10,7 @@ import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/Button';
 import { Container, Section } from '@/components/ui/Container';
 import { Photo } from '@/components/ui/Photo';
-import { ArrowIcon, Eyebrow, Overline, SectionHeading } from '@/components/ui/SectionHeading';
+import { ArrowIcon, Eyebrow, SectionHeading } from '@/components/ui/SectionHeading';
 import { getApi } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { getSiteSettings } from '@/lib/server';
@@ -80,9 +80,7 @@ function CustomTripCard({ email }) {
   return (
     <article className="contour-bg relative flex min-h-[320px] flex-col justify-between gap-8 overflow-hidden rounded-[22px] bg-navy-2 p-7 text-page lg:min-h-[420px] lg:rounded-3xl lg:p-8">
       <div className="flex flex-col gap-3">
-        <Overline light dash={false}>
-          apni yatra, apne hisaab se
-        </Overline>
+        <span className="font-hand text-[20px] leading-snug text-gold-light">apni yatra, apne hisaab se</span>
         <h3 className="text-[24px] leading-[1.1] lg:text-[26px]">Build a custom trip</h3>
         <p className="text-footer-text">
           Tell us your dates, group and pace. We&apos;ll draw the route across Kumaon and Garhwal for you.
@@ -207,6 +205,7 @@ export default async function HomePage() {
         <Section>
           <Container className="flex flex-col gap-3 lg:gap-12">
             <SectionHeading
+              hand
               overline={t.gallery.overline || ASIDES.gallery}
               title={t.gallery.title}
               linkLabel={t.gallery.linkLabel}
@@ -311,7 +310,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="flex flex-col justify-center gap-3 px-[22px] pt-4 pb-14 lg:flex-[1_1_380px] lg:gap-4 lg:p-14">
-            <span className="font-hand text-[20px] leading-snug text-gold-light lg:text-[22px]">
+            <span className="font-display text-[22px] leading-tight text-gold-light lg:text-[26px]">
               {t.ctaBanner.title}
             </span>
             <p className="text-lg lg:text-xl">{t.ctaBanner.text}</p>

@@ -111,9 +111,7 @@ export function Footer({ company, social }) {
         <div className="flex flex-col gap-5 pt-6 pb-6 lg:grid lg:grid-cols-[minmax(0,1.3fr)_repeat(4,minmax(0,1fr))] lg:gap-9 lg:pt-12 lg:pb-8">
           <div className="flex flex-col gap-3.5">
             <Logo name={company.name} tone="light" />
-            {company.tagline && (
-              <p className="font-hand text-[19px] leading-snug text-gold-light">{company.tagline}</p>
-            )}
+            {company.tagline && <p className="text-[15px] leading-6 text-footer-text">{company.tagline}</p>}
             {socials.length > 0 && (
               <div className="flex gap-2.5">
                 {socials.map((name) => (

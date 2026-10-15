@@ -58,7 +58,7 @@ function RelatedPackage({ pkg }) {
         <Photo src={pkg.coverImageUrl} alt="" sizes="(min-width: 1024px) 340px, 100vw" />
       </div>
       <div className="flex flex-col gap-2 p-6">
-        <span className="font-hand text-[20px] leading-snug text-gold-light">plan it with us</span>
+        <span className="text-xs font-bold tracking-[.18em] uppercase text-gold-light">Plan it with us</span>
         <h2 className="text-[21px] leading-[1.2]">{pkg.title}</h2>
         <p className="text-[15px] text-footer-text">
           {pkg.durationDays} days · {pkg.durationNights} nights

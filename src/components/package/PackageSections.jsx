@@ -213,7 +213,7 @@ export function ReviewsSection({ reviews, rating, reviewCount }) {
       <div className="flex flex-col gap-6">
         {reviews.map((review) => (
           <figure key={review.id} className="flex flex-col gap-3">
-            <blockquote className="font-display text-[19px] leading-[1.35] lg:text-[20px]">
+            <blockquote className="text-[17px] leading-[1.6] font-medium text-ink lg:text-lg">
               “{review.text}”
             </blockquote>
             <figcaption className="flex items-center gap-3">

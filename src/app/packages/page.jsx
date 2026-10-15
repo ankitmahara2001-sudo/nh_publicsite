@@ -61,6 +61,7 @@ export default async function PackagesPage({ searchParams }) {
   return (
     <main>
       <PageHero
+        theme="dawn"
         title={hero.title}
         subtitle={
           <>

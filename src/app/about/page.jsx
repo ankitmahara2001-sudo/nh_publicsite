@@ -151,8 +151,8 @@ function CallToAction({ cta }) {
           />
         </svg>
         <div className="flex flex-col gap-2">
-          <span aria-hidden="true" className="font-hand text-[20px] text-gold-light">
-            plan your next journey —
+          <span aria-hidden="true" className="text-xs font-bold tracking-[.18em] uppercase text-gold-light">
+            Plan your next journey
           </span>
           <h2 className="text-[24px] leading-[1.1] lg:text-[32px]">{cta.title}</h2>
           {cta.text && <p className="hidden text-lg text-footer-text lg:block">{cta.text}</p>}
@@ -178,6 +178,7 @@ export default async function AboutPage() {
   return (
     <main>
       <PageHero
+        theme="forest"
         title={about.hero.title}
         subtitle={about.hero.subtitle}
         imageUrl={about.hero.imageUrl}

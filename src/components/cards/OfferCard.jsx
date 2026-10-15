@@ -2,82 +2,127 @@ import { cn } from '@/lib/cn';
 import { CopyCodeButton } from './CopyCodeButton';
 import { discountLabel, kindLabel, offerRules, validityLabel } from './offerText';
 
-// Coupon colours (design: "Offers on the trail"): Snow coupons with a sand stub, alternating with
-// Marigold coupons with a lighter marigold stub.
+// Light coupon palettes: a pale ticket, a deeper pastel stub and one strong accent for the discount.
 const TONES = {
-  snow: {
-    card: 'bg-page text-ink',
-    eyebrow: 'text-pine',
-    text: 'text-muted',
-    label: 'text-muted',
-    stub: 'border-[#c9bfa8] bg-stub',
+  peach: {
+    card: 'bg-[#fff4ec]',
+    accent: 'text-[#e0612b]',
+    stub: 'bg-[#ffdcc4]',
+    bar: '#e0612b',
   },
-  marigold: {
-    card: 'bg-gold text-ink',
-    eyebrow: 'font-extrabold text-ink',
-    text: 'text-[#2a1c0c]',
-    label: 'font-extrabold text-ink',
-    stub: 'border-navy/45 bg-gold-2',
+  mint: {
+    card: 'bg-[#eafaf5]',
+    accent: 'text-[#0f9384]',
+    stub: 'bg-[#c4eee3]',
+    bar: '#0f9384',
+  },
+  lavender: {
+    card: 'bg-[#f3efff]',
+    accent: 'text-[#6a4bd0]',
+    stub: 'bg-[#dcd2fb]',
+    bar: '#6a4bd0',
+  },
+  butter: {
+    card: 'bg-[#fff9e3]',
+    accent: 'text-[#c98a00]',
+    stub: 'bg-[#ffe8a3]',
+    bar: '#b07800',
   },
 };
+const TONE_ORDER = ['peach', 'mint', 'lavender', 'butter'];
 
-/** Alternates the coupon colour along a list of offers. */
-export const offerTone = (index) => (index % 2 === 1 ? 'marigold' : 'snow');
+/** Cycles the coupon colours along a list of offers. */
+export const offerTone = (index) => TONE_ORDER[index % TONE_ORDER.length];
+
+/** Decorative barcode drawn from the code's characters, so every coupon gets its own pattern. */
+function Barcode({ code, color }) {
+  const widths = Array.from(`${code}*${code}`).map((char) => 1 + (char.charCodeAt(0) % 3));
+  let x = 0;
+  const bars = widths.map((width, index) => {
+    const bar = { x, width };
+    x += width + 1.5 + (index % 2);
+    return bar;
+  });
+  return (
+    <svg
+      viewBox={`0 0 ${x} 30`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      className="h-7 w-full max-w-[120px] lg:h-8"
+    >
+      {bars.map((bar) => (
+        <rect key={bar.x} x={bar.x} y="0" width={bar.width} height="30" fill={color} />
+      ))}
+    </svg>
+  );
+}
 
 /**
- * Two-part coupon: offer on the left, dashed tear line, code stub with "Copy code" on the right.
- * Stacks into a compact row on phones (design: Mobile-Home offers).
+ * Two-part coupon ticket: the offer on the left, a stub with a scalloped tear edge on the right
+ * holding the code, a barcode and "Copy code". Wobbles for a second on hover (globals.css `.coupon`).
  */
-function Coupon({ offer, tone = 'snow', title, eyebrow, lines, outlined = false }) {
-  const t = TONES[tone];
+function Coupon({ offer, tone = 'peach', title, eyebrow, lines }) {
+  const t = TONES[tone] ?? TONES.peach;
   return (
     <article
       className={cn(
-        'flex overflow-hidden rounded-[18px] lg:rounded-[20px]',
+        'coupon relative flex overflow-hidden rounded-[18px] text-ink shadow-[0_18px_40px_-24px_rgba(18,38,31,.5)]',
         t.card,
-        outlined && tone === 'snow' && 'border border-line',
       )}
     >
-      <div className="flex min-w-0 flex-1 flex-col gap-1 p-[18px] lg:gap-2 lg:p-7">
+      <div className="flex min-w-0 flex-1 gap-3 p-[18px] lg:gap-4 lg:p-7">
         <span
+          aria-hidden="true"
           className={cn(
-            'text-[11px] font-bold tracking-[.16em] uppercase lg:text-xs lg:tracking-[.18em]',
-            t.eyebrow,
+            'hidden shrink-0 rotate-180 text-[10px] font-bold tracking-[.22em] uppercase [writing-mode:vertical-rl] sm:block',
+            t.accent,
           )}
         >
-          {eyebrow}
+          Limited time only
         </span>
-        <span className="font-display text-[24px] leading-[1.1] lg:text-[34px] lg:leading-none">
-          {discountLabel(offer)}
-        </span>
-        {title}
-        <div className={cn('flex flex-col gap-0.5 text-[13px] lg:mt-auto lg:pt-2', t.text)}>{lines}</div>
+        <div className="flex min-w-0 flex-col gap-1 lg:gap-1.5">
+          <span className={cn('text-[11px] font-bold tracking-[.18em] uppercase lg:text-xs', t.accent)}>
+            {eyebrow}
+          </span>
+          <span
+            className={cn(
+              'font-display text-[30px] leading-[.95] font-extrabold uppercase lg:text-[44px]',
+              t.accent,
+            )}
+          >
+            {discountLabel(offer)}
+          </span>
+          {title}
+          <div className="flex flex-col gap-0.5 text-[13px] text-muted lg:mt-auto lg:pt-1.5">{lines}</div>
+        </div>
       </div>
       <div
         className={cn(
-          'flex w-[118px] shrink-0 flex-col items-center justify-center gap-1.5 border-l-2 border-dashed px-3 py-4 text-center sm:w-[180px] lg:w-[200px] lg:items-start lg:gap-2.5 lg:px-[22px] lg:py-7 lg:text-left',
+          'coupon-stub flex w-[128px] shrink-0 flex-col items-center justify-center gap-2 py-5 pr-3 pl-5 text-center sm:w-[176px] lg:w-[196px] lg:gap-2.5 lg:pr-4 lg:pl-7',
           t.stub,
         )}
       >
-        <span className={cn('hidden text-xs font-bold tracking-[.14em] uppercase lg:block', t.label)}>
+        <span className="text-[10px] font-bold tracking-[.18em] text-ink/70 uppercase lg:text-[11px]">
           Use code
         </span>
-        <span className="font-display text-lg tracking-[.06em] break-all lg:text-[24px]">{offer.code}</span>
+        <span className="font-display text-lg leading-none font-extrabold tracking-[.06em] break-all lg:text-[24px]">
+          {offer.code}
+        </span>
+        <Barcode code={offer.code} color={t.bar} />
         <CopyCodeButton code={offer.code} variant="pill" />
       </div>
     </article>
   );
 }
 
-/** Compact offer coupon on the dark band of the home page (design/Main "Offers on the trail"). */
-export function OfferTeaserCard({ offer, tone = 'snow' }) {
-  const t = TONES[tone];
+/** Compact offer coupon on the dark band of the home page. */
+export function OfferTeaserCard({ offer, tone = 'peach' }) {
   return (
     <Coupon
       offer={offer}
       tone={tone}
       eyebrow={kindLabel(offer) === 'Flat' ? 'Flat discount' : 'Coupon'}
-      title={<span className={cn('text-[15px] lg:text-base', t.text)}>{offer.description}</span>}
+      title={<span className="text-[15px] font-semibold lg:text-base">{offer.description}</span>}
       lines={
         <>
           <span>{offerRules(offer)[0]}</span>
@@ -88,15 +133,18 @@ export function OfferTeaserCard({ offer, tone = 'snow' }) {
   );
 }
 
-/** Full offer coupon on the Offers page (design/Offers via the home coupons). */
-export function OfferCard({ offer, tone = 'snow' }) {
+/** Full offer coupon on the Offers page. */
+export function OfferCard({ offer, tone = 'peach' }) {
   return (
     <Coupon
       offer={offer}
       tone={tone}
-      outlined
       eyebrow={kindLabel(offer)}
-      title={<h2 className="font-sans text-base leading-6 font-bold lg:text-[17px]">{offer.description}</h2>}
+      title={
+        <h2 className="font-sans text-base leading-6 font-bold tracking-normal lg:text-[17px]">
+          {offer.description}
+        </h2>
+      }
       lines={
         <ul className="flex list-disc flex-col gap-0.5 pl-[18px] text-[13px] lg:text-sm">
           {offerRules(offer).map((rule) => (

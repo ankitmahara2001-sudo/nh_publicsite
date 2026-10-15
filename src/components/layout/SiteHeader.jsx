@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { buttonClasses } from '@/components/ui/Button';
 import { enquiryHref } from '@/lib/enquiry';
 import { cn } from '@/lib/cn';
@@ -103,7 +104,12 @@ export function SiteHeader({ variant = 'transparent', active, company }) {
           </div>
         </div>
       </header>
-      {menuOpen && <MobileMenu company={company} active={active} onClose={() => setMenuOpen(false)} />}
+      {/* Rendered into <body>: the header can sit inside a hero, and the menu must cover the whole page. */}
+      {menuOpen &&
+        createPortal(
+          <MobileMenu company={company} active={active} onClose={() => setMenuOpen(false)} />,
+          document.body,
+        )}
     </>
   );
 }

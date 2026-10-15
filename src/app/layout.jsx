@@ -1,4 +1,4 @@
-import { Figtree, Kalam, Young_Serif } from 'next/font/google';
+import { Figtree, Kalam, Plus_Jakarta_Sans } from 'next/font/google';
 import { preconnect } from 'react-dom';
 import { Footer } from '@/components/layout/Footer';
 import { BROWSER_API_ORIGIN } from '@/lib/api';
@@ -6,17 +6,17 @@ import { getSiteSettings } from '@/lib/server';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
-// Design type: Figtree (body/UI), Young Serif (headlines, prices), Kalam (short handwritten asides).
+// Type: Figtree (body/UI), Plus Jakarta Sans (headlines, prices), Kalam (gallery captions only).
 const figtree = Figtree({
   variable: '--font-figtree',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const youngSerif = Young_Serif({
-  variable: '--font-young-serif',
+const jakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
   subsets: ['latin'],
-  weight: '400',
+  weight: ['500', '600', '700', '800'],
 });
 
 const kalam = Kalam({
@@ -48,7 +48,7 @@ export default async function RootLayout({ children }) {
   if (BROWSER_API_ORIGIN) preconnect(BROWSER_API_ORIGIN, { crossOrigin: 'use-credentials' });
   const { company, social } = await getSiteSettings();
   return (
-    <html lang="en-IN" className={`${figtree.variable} ${youngSerif.variable} ${kalam.variable} antialiased`}>
+    <html lang="en-IN" className={`${figtree.variable} ${jakarta.variable} ${kalam.variable} antialiased`}>
       <body className="flex min-h-screen flex-col bg-page font-sans text-ink">
         <a
           href="#main"

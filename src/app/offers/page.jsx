@@ -32,6 +32,7 @@ export default async function OffersPage() {
   return (
     <main>
       <PageHero
+        theme="sunset"
         title={page.title}
         subtitle={page.subtitle}
         imageUrl={page.imageUrl}

@@ -58,6 +58,7 @@ export default async function GalleryPage({ searchParams }) {
       <PageHero
         variant="plain"
         overline="postcards from devbhoomi"
+        handwritten
         title={hero.title}
         subtitle={hero.subtitle}
         imageUrl={hero.imageUrl}

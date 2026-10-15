@@ -22,20 +22,22 @@ export function ArrowIcon({ size = 18, className }) {
 }
 
 /**
- * Handwritten Kalam aside shown above headings ("pick a valley —"). Design rule: only short asides
- * above headings and captions, never body text. `light` is for dark backgrounds.
+ * Short label above a heading ("PICK A VALLEY"). `hand` switches to the handwritten Kalam style
+ * ("postcards from devbhoomi —"), used only in the gallery. `light` is for dark backgrounds.
  */
-export function Overline({ children, light = false, dash = true, className }) {
+export function Overline({ children, light = false, hand = false, className }) {
   return (
     <span
       className={cn(
-        'font-hand text-lg leading-snug lg:text-[20px]',
+        hand
+          ? 'font-hand text-lg leading-snug lg:text-[20px]'
+          : 'text-xs font-bold tracking-[.18em] uppercase lg:text-[13px]',
         light ? 'text-gold-light' : 'text-gold-text',
         className,
       )}
     >
       {children}
-      {dash && <span aria-hidden="true"> —</span>}
+      {hand && <span aria-hidden="true"> —</span>}
     </span>
   );
 }
@@ -56,14 +58,19 @@ export function Eyebrow({ children, light = false, className }) {
 }
 
 /**
- * Kalam aside + serif H2 + optional "View all →" link, as used by every home page section.
- * `light` is for sections on the dark Deodar background.
+ * Label + H2 + optional "View all →" link, as used by every home page section.
+ * `light` is for sections on the dark Deodar background; `hand` gives the label the gallery's
+ * handwritten style.
  */
-export function SectionHeading({ overline, title, linkLabel, href, light = false, className }) {
+export function SectionHeading({ overline, title, linkLabel, href, light = false, hand = false, className }) {
   return (
     <div className={cn('flex flex-wrap items-end justify-between gap-x-6 gap-y-3', className)}>
       <div className="flex max-w-[620px] flex-col gap-1 lg:gap-2">
-        {overline && <Overline light={light}>{overline}</Overline>}
+        {overline && (
+          <Overline light={light} hand={hand}>
+            {overline}
+          </Overline>
+        )}
         <h2 className="text-[24px] leading-[1.1] lg:text-[clamp(28px,3.2vw,40px)] lg:leading-[1.05]">
           {title}
         </h2>
