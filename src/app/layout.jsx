@@ -1,5 +1,6 @@
 import { Figtree, Kalam, Plus_Jakarta_Sans } from 'next/font/google';
 import { preconnect } from 'react-dom';
+import { BugXP } from 'bug_xp/next';
 import { Footer } from '@/components/layout/Footer';
 import { BROWSER_API_ORIGIN } from '@/lib/api';
 import { getSiteSettings } from '@/lib/server';
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en-IN" className={`${figtree.variable} ${jakarta.variable} ${kalam.variable} antialiased`}>
       <body className="flex min-h-screen flex-col bg-page font-sans text-ink">
+        <BugXP apiKey="pk_13e4129e937ca20e9dc04a3b" ingestKey="ik_vO0_2tlRVv3aMCXx37WocD0h57NdlqGe" />
         <a
           href="#main"
           className="sr-only z-50 rounded-full bg-gold px-4 py-2 font-bold text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
